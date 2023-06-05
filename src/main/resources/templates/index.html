@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="h-full bg-white">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="${project}">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body class="bg-white">
+<div th:replace="~{fragments/header :: header}"></div>
+    <p>Paolo</p>
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Test</h1>
+
+    <div>
+        <a href="/register">Elenco Film</a>
+    </div>
+
+    <div th:if="${isAuthenticated}">
+        <span th:text="${palle}"></span>
+        <span>Logout</span>
+    </div>
+    <div th:unless="${isAuthenticated}">
+        <span th:text="${palle}"></span>
+    </div>
+
+    <img th:src="@{/images/crit.png}" alt="Errore critico!" />
+
+</body>
+</html>

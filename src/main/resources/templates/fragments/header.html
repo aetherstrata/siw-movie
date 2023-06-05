@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Fragment</title>
+</head>
+<body>
+<header class="flex bg-sky-950 p-5 font-comfortaa" th:fragment="header">
+    <div class="flex place-content-start space-x-5 float-left w-1/2">
+        <a href="/movies">
+            <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Movies</button>
+        </a>
+        <a href="/artists">
+            <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Artists</button>
+        </a>
+        <a href="/reviews">
+            <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Reviews</button>
+        </a>
+    </div>
+    <div class="relative flex place-content-center whitespace-nowrap">
+        <span class="absolute text-3xl text-sky-100 bottom-0" th:text="${project}"></span>
+    </div>
+    <div class="flex place-content-end w-1/2">
+        <div th:if="${isAuthenticated}">
+            <a href="/logout">
+                <button type="submit" class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                    Logout
+                </button>
+            </a>
+        </div>
+        <div th:unless="${isAuthenticated}">
+            <a href="/login">
+                <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Login</button>
+            </a>
+        </div>
+    </div>
+</header>
+</body>
+</html>
