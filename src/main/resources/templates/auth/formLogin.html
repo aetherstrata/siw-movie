@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="|${project} - Login|">Title</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
-<body class="bg-white">
+<body>
 <div th:replace="~{fragments/header :: header}"></div>
-<h1
-        class="m-5 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-center"
->
-    Login
-</h1>
-<p th:each="url : ${urls}">
-    <a th:text="${url.key}" th:href="${url.value}"></a>
-</p>
-<div class="flex flex-row">
-    <div class="w-1/6"></div>
-    <div class="flex flex-row justify-center w-1/3 p-5">
-        <div class="rounded-xl bg-slate-400 p-5 w-1/2">
-            <span>FORM</span>
+<div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
+    <div class="antialiased text-gray-900 px-6 py-12 max-w-4xl">
+        <span class="text-3xl font-bold text-center">Sign In</span>
+        <div class="mt-8 max-w-lg">
+            <div class="grid grid-cols-1 gap-6">
+                <form th:action="@{/login}" method="post" class="space-y-4 w-96">
+                    <label class="block">
+                        <span class="text-gray-700">Username</span>
+                        <input
+                                required
+                                name="username"
+                                placeholder=""
+                                type="text"
+                                class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
+                        />
+                    </label>
+                    <label class="block">
+                        <span class="text-gray-700">Password</span>
+                        <input
+                                required
+                                name="password"
+                                placeholder=""
+                                type="password"
+                                class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
+                        />
+                    </label>
+                    <div class="flex justify-center mt-2">
+                        <label class="inline-flex items-center">
+                            <input
+                                    type="submit"
+                                    class="p-5 rounded-xl bg-gray-200 border-transparent text-gray-700 hover:bg-sky-950 hover:text-white"
+                                    value="Sign in"
+                            />
+                        </label>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="rounded-xl bg-slate-400 p-5"><span>FORM</span></div>
     </div>
-    <div class="flex flex-col justify-center w-1/3 p-5">
-        <div
-                class="m-5 text-3xl font-bold tracking-tight text-gray-900 text-center"
-        >
-            OAuth
-        </div>
-        <div class="rounded-xl bg-slate-400 p-5"><span>GITHUB</span></div>
-    </div>
-    <div class="w-1/6"></div>
 </div>
-<!-- TEST -->
 </body>
 </html>
