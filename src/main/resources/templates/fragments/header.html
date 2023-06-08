@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Header Fragment</title>
@@ -7,30 +7,47 @@
 <body>
 <header class="flex bg-sky-950 p-5 font-comfortaa" th:fragment="header">
     <div class="flex place-content-start space-x-5 float-left w-1/2">
-        <a href="/movies">
+        <a th:href="@{/movies}">
             <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Movies</button>
         </a>
-        <a href="/artists">
+        <a th:href="@{/artists}">
             <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Artists</button>
         </a>
-        <a href="/reviews">
+        <a th:href="@{/reviews}">
             <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Reviews</button>
         </a>
     </div>
     <div class="relative flex place-content-center whitespace-nowrap">
-        <span class="absolute text-3xl text-sky-100 bottom-0" th:text="${project}"></span>
+        <a th:href="@{/}">
+            <span class="text-3xl text-sky-100 bottom-0" th:text="${project}"></span>
+        </a>
     </div>
-    <div class="flex place-content-end w-1/2">
-        <div th:if="${isAuthenticated}">
-            <a href="/logout">
-                <button type="submit" class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    Logout
+    <div class="flex place-content-end w-1/2 space-x-5">
+        <div class="pt-1.5" sec:authorize="isAuthenticated()">
+            <span class="text-xl text-sky-50" sec:authentication="name"></span>
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/admin}">
+                <button
+                        type="submit"
+                        class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                    Admin
                 </button>
             </a>
         </div>
-        <div th:unless="${isAuthenticated}">
-            <a href="/login">
-                <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Login</button>
+        <div sec:authorize="isAuthenticated()">
+
+            <form action="#" th:action="@{/logout}" method="post">
+                <button
+                        type="submit"
+                        class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                    Logout
+                </button>
+            </form>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">
+                <button class="px-4 py-1.5 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">Login</button>
             </a>
         </div>
     </div>
