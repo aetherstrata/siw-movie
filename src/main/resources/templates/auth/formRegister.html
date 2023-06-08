@@ -4,20 +4,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="|${project} - Register|">Title</title>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com/"></script>
 </head>
 <body class="bg-white">
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
-    <div class="antialiased text-gray-900 px-6 py-12 w-128">
+    <div class="antialiased text-gray-900 px-6 py-12 max-w-4xl">
         <h2 class="text-3xl font-bold text-center">Sign Up</h2>
         <div class="mt-8 max-w-lg">
             <div class="grid grid-cols-1 gap-6">
-                <form th:action="@{/register}" method="post">
+                <form th:action="@{/register}" method="post" class="space-y-4">
                     <label class="block">
                         <span class="text-gray-700">Username</span>
                         <input
                                 th:field="${credentials.username}"
+                                required
                                 placeholder=""
                                 type="text"
                                 class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
@@ -28,6 +28,7 @@
                         <span class="text-gray-700">Email address</span>
                         <input
                                 th:field="${user.email}"
+                                required
                                 placeholder="user@example.com"
                                 type="email"
                                 class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
@@ -38,6 +39,7 @@
                         <span class="text-gray-700">Password</span>
                         <input
                                 th:field="${credentials.password}"
+                                required
                                 placeholder=""
                                 type="password"
                                 class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
