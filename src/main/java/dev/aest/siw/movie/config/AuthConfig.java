@@ -67,6 +67,8 @@ public class AuthConfig
                 .oauth2Login(authorize -> authorize
                         .loginPage("/login"))
                 .logout(authorize -> authorize
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/")
                         .permitAll());
         return httpSecurity.build();

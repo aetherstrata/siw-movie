@@ -4,6 +4,7 @@ import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.service.CredentialsService;
 import dev.aest.siw.movie.service.UserService;
+import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +37,11 @@ public class AuthController
     }
 
     @GetMapping("/register")
-    public String registerPage(Model model){
+    public String registerPage(Model model, @ModelAttribute("user") final User user){
+
+        if (user.getId() != null)
+            return "auth/successfulRegister";
+
         model.addAttribute("user", new User());
         model.addAttribute("credentials", new Credentials());
         return "auth/formRegister";
@@ -42,17 +49,22 @@ public class AuthController
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") User user,
-                               BindingResult userBindingResult,
-                               @Valid @ModelAttribute("credentials") Credentials credentials,
-                               BindingResult credentialsBindingResult,
-                               Model model) {
+                             BindingResult userBindingResult,
+                             @Valid @ModelAttribute("credentials") Credentials credentials,
+                             BindingResult credentialsBindingResult,
+                             RedirectAttributes redirect) throws IOException {
         if(!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
             credentials.setUser(user);
             credentialsService.saveCredentials(credentials);
-            model.addAttribute("user", user);
-            return "auth/successfulRegister";
+            redirect.addFlashAttribute("user", user);
         }
-        return "auth/formRegister";
+        return "redirect:/register";
+    }
+
+    @GetMapping("/registrationSuccess")
+    public String registrationSuccess(ServletRequest request, Model model){
+        model.addAttribute("user", request.getAttribute("user"));
+        return "auth/successfulRegister";
     }
 
     @GetMapping("/login")
@@ -63,6 +75,6 @@ public class AuthController
 
     @GetMapping("/success")
     public String authenticationSuccess(Model model){
-        return credentialsService.isAdminUser() ? "redirect:admin/index" : "redirect:index";
+        return "redirect:/";
     }
 }
