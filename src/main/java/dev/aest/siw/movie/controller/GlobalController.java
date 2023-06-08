@@ -18,9 +18,4 @@ public class GlobalController
     public String addProjectName(){
         return SiwMovie.PROJECT_NAME;
     }
-
-    @ModelAttribute("isAuthenticated")
-    public boolean checkAuthentication(){
-        return credentialsService.isAuthenticated();
-    }
 }
