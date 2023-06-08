@@ -1,4 +1,4 @@
-package dev.aest.siw.movie.authentication;
+package dev.aest.siw.movie.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
