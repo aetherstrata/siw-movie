@@ -22,6 +22,7 @@ public class Credentials implements UserDetails
     @GeneratedValue
     private UUID id;
 
+    @Column(unique = true)
     @NotBlank
     private String username;
 

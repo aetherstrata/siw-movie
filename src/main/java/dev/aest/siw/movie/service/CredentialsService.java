@@ -31,11 +31,6 @@ public class CredentialsService implements UserDetailsService
         return auth instanceof OAuth2AuthenticationToken;
     }
 
-    public boolean isAuthenticated(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
-    }
-
     public boolean isAdminUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null && auth.getAuthorities().stream().anyMatch(x -> x.getAuthority().equals(Credentials.ADMIN_ROLE));
@@ -62,6 +57,6 @@ public class CredentialsService implements UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        return credentialsRepository.findByUsername(username).orElse(null);
     }
 }
