@@ -3,6 +3,7 @@ package dev.aest.siw.movie.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ public class Credentials implements UserDetails
     private String username;
 
     @NotBlank
+    @Length(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
     private String role;
