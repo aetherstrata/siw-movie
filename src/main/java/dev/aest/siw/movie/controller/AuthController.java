@@ -3,8 +3,6 @@ package dev.aest.siw.movie.controller;
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.service.CredentialsService;
-import dev.aest.siw.movie.service.UserService;
-import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,19 +27,13 @@ public class AuthController
     }};
 
     private final CredentialsService credentialsService;
-    private final UserService userService;
 
-    public AuthController(CredentialsService credentialsService, UserService userService) {
+    public AuthController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
-        this.userService = userService;
     }
 
     @GetMapping("/register")
-    public String registerPage(Model model, @ModelAttribute("user") final User user){
-
-        if (user.getId() != null)
-            return "auth/successfulRegister";
-
+    public String registerPage(Model model){
         model.addAttribute("user", new User());
         model.addAttribute("credentials", new Credentials());
         return "auth/formRegister";
@@ -57,14 +49,9 @@ public class AuthController
             credentials.setUser(user);
             credentialsService.saveCredentials(credentials);
             redirect.addFlashAttribute("user", user);
+            return "auth/successfulRegister";
         }
-        return "redirect:/register";
-    }
-
-    @GetMapping("/registrationSuccess")
-    public String registrationSuccess(ServletRequest request, Model model){
-        model.addAttribute("user", request.getAttribute("user"));
-        return "auth/successfulRegister";
+        return "auth/formRegister";
     }
 
     @GetMapping("/login")
