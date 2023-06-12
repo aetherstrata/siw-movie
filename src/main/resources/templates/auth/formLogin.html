@@ -13,30 +13,30 @@
         <div class="mt-8 max-w-lg">
             <form th:action="@{/login}" method="post" class="space-y-4 w-96">
                 <label class="block">
-                    <span class="text-gray-700">Username</span>
+                    <span class="form-input-title">Username</span>
                     <input
                             required
                             name="username"
                             placeholder=""
                             type="text"
-                            class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="form-input-field"
                     />
                 </label>
                 <label class="block">
-                    <span class="text-gray-700">Password</span>
+                    <span class="form-input-title">Password</span>
                     <input
                             required
                             name="password"
                             placeholder=""
                             type="password"
-                            class="mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="form-input-field"
                     />
                 </label>
                 <div class="flex justify-center">
                     <label class="inline-flex items-center mt-8">
                         <input
                                 type="submit"
-                                class="p-5 w-48 rounded-xl bg-gray-200 border-transparent text-gray-700 hover:bg-sky-950 hover:text-white"
+                                class="form-input-button"
                                 value="Sign in"
                         />
                     </label>
