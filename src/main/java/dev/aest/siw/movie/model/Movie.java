@@ -30,6 +30,8 @@ public class Movie
     @Max(2023)
     private Integer year;
 
+    private String imageUrl;
+
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -44,7 +46,7 @@ public class Movie
     )
     private Set<Artist> actors;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     @PrePersist

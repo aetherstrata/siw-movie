@@ -26,7 +26,7 @@ public class User
 
     private String surname;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     public User(){
