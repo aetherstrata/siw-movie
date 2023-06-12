@@ -2,10 +2,13 @@ package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +17,11 @@ import java.util.Optional;
 public class UserService
 {
     private final UserRepository userRepository;
+    private final CredentialsService credentialsService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CredentialsService credentialsService) {
         this.userRepository = userRepository;
+        this.credentialsService = credentialsService;
     }
 
     /**
@@ -24,11 +29,20 @@ public class UserService
      * @param id the id of the {@link User} to retrieve from the database
      * @return the retrieved {@link User}, or null if no {@link User} with the passed ID could be found in the database
      */
-    @Transactional
     public User getUser(Long id) {
         Optional<User> result = this.userRepository.findById(id);
         return result.orElse(null);
     }
+
+    /**
+     * Retrieve the current {@link User} from the database.
+     * @return the retrieved {@link User}, or null if no {@link User} is logged in
+     */
+    public User getCurrentUser(Principal principal) {
+        Optional<User> result = this.userRepository.findByUsername(principal.getName());
+        return result.orElse(null);
+    }
+
 
     /**
      * Save a {@link User} in the database.
