@@ -1,4 +1,4 @@
-package dev.aest.siw.movie.controller.validator;
+package dev.aest.siw.movie.validation;
 
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.MovieRepository;

@@ -1,14 +1,19 @@
 package dev.aest.siw.movie.repository;
 
 import dev.aest.siw.movie.model.Movie;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MovieRepository extends CrudRepository<Movie, Long>
+public interface MovieRepository extends JpaRepository<Movie, Long>
 {
-    public List<Movie> findByTitle(String title);
-    public List<Movie> findByYear(int year);
+    List<Movie> findByTitle(String title);
+    Page<Movie> findByTitle(String title, Pageable pageable);
 
-    public boolean existsByTitleAndYear(String title, int year);
+    List<Movie> findByYear(int year);
+    Page<Movie> findByYear(int year, Pageable pageable);
+
+    boolean existsByTitleAndYear(String title, int year);
 }
