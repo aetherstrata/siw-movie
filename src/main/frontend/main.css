@@ -17,7 +17,7 @@
         @apply mt-1 block w-full rounded-md bg-gray-100 border-transparent hover:border-gray-500 focus:border-gray-500 focus:bg-white focus:ring-0
     }
 
-    .form-input-button{
-        @apply p-5 rounded-xl bg-gray-200 border-transparent text-gray-700 hover:bg-sky-950 hover:text-white
+    .primary-action-button{
+        @apply p-5 w-48 rounded-xl bg-gray-200 border-transparent text-gray-700 hover:bg-sky-950 hover:text-white
     }
 }
