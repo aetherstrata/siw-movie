@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:tf="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="|${project} - Login|">Title</title>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
@@ -36,7 +37,7 @@
                     <label class="inline-flex items-center mt-8">
                         <input
                                 type="submit"
-                                class="form-input-button"
+                                class="primary-action-button"
                                 value="Sign in"
                         />
                     </label>
@@ -47,7 +48,7 @@
     <div class="h-[2px] max-w-lg rounded bg-slate-400"></div>
     <div class="flex flex-col justify-center antialiased text-gray-900 px-6 py-12 max-w-lg">
         <a class="m-auto" th:href="@{/register}">
-            <button class="p-5 w-48 rounded-xl bg-gray-200 border-transparent text-gray-700 hover:bg-sky-950 hover:text-white">
+            <button class="primary-action-button">
                 Register
             </button>
         </a>

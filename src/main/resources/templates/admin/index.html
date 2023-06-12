@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" class="h-full bg-white">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title th:text="${project} - Admin">Title</title>
+  <title th:text="|${project} - Admin|">Title</title>
   <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
-  <div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<span>Admin panel</span>
 </body>
 </html>

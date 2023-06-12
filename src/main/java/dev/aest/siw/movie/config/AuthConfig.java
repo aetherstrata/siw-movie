@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import javax.sql.DataSource;
 
@@ -48,15 +49,21 @@ public class AuthConfig
 
     @Bean
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
+        // See https://stackoverflow.com/questions/75222930/spring-boot-3-0-2-adds-continue-query-parameter-to-request-url-after-login
+        // HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        // requestCache.setMatchingRequestParameterName(null);
+
         httpSecurity
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().cors().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(HttpMethod.GET, "/","/register", "/css/**", "/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/","/register", "/css/**", "/images/**", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY)
                         .anyRequest().authenticated()
                 )
+                //.requestCache(cache -> cache
+                //        .requestCache(requestCache))
                 .formLogin(authorize -> authorize
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
