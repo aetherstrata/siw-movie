@@ -2,7 +2,6 @@ package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.repository.CredentialsRepository;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +32,7 @@ public class CredentialsService implements UserDetailsService
 
     public boolean isAdminUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth != null && auth.getAuthorities().stream().anyMatch(x -> x.getAuthority().equals(Credentials.ADMIN_ROLE));
+        return auth != null && auth.getAuthorities().stream().anyMatch(x -> x.getAuthority().equals(Credentials.ADMIN_AUTHORITY));
     }
 
     @Transactional(readOnly = true)
@@ -50,7 +49,7 @@ public class CredentialsService implements UserDetailsService
 
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole(Credentials.DEFAULT_ROLE);
+        credentials.setRole(Credentials.DEFAULT_AUTHORITY);
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }

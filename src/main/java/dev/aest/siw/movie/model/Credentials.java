@@ -16,8 +16,8 @@ import java.util.UUID;
 @Data
 public class Credentials implements UserDetails
 {
-    public static final String DEFAULT_ROLE = "REGISTERED";
-    public static final String ADMIN_ROLE = "ADMIN";
+    public static final String DEFAULT_AUTHORITY = "REGISTERED";
+    public static final String ADMIN_AUTHORITY = "ADMIN";
 
     @Id
     @GeneratedValue
@@ -59,5 +59,20 @@ public class Credentials implements UserDetails
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Credentials that = (Credentials) o;
+
+        return username.equals(that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
     }
 }
