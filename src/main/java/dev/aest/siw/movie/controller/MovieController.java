@@ -5,6 +5,7 @@ import dev.aest.siw.movie.model.Review;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.service.ReviewService;
 import dev.aest.siw.movie.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class MovieController
 {
     private final MovieService movieService;
     private final UserService userService;
     private final ReviewService reviewService;
-
-    public MovieController(MovieService movieService,
-                           UserService userService,
-                           ReviewService reviewService) {
-        this.movieService = movieService;
-        this.userService = userService;
-        this.reviewService = reviewService;
-    }
 
     @GetMapping("/movies")
     public String movieHome(
@@ -45,14 +38,10 @@ public class MovieController
     @GetMapping("/movies/{id}")
     public String movieDetails(
             @PathVariable long id,
-            @RequestParam(required = false) Optional<Integer> page,
-            Principal principal,
             Model model) {
         Movie movie = movieService.getMovie(id);
-        Page<Review> reviewsPage = reviewService.getReviewPage(movie, page.orElse(0));
         model.addAttribute("movie", movie);
-        model.addAttribute("reviews", reviewsPage.stream().filter(review ->
-                !review.getUser().equals(userService.getCurrentUser(principal))));
+        model.addAttribute("reviewsCount", reviewService.getCountByMovie(movie));
         return "movies/movieDetails";
     }
 }

@@ -8,12 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class GlobalController
 {
-    public final CredentialsService credentialsService;
-
-    public GlobalController(CredentialsService credentialsService) {
-        this.credentialsService = credentialsService;
-    }
-
     @ModelAttribute("project")
     public String addProjectName(){
         return SiwMovie.PROJECT_NAME;

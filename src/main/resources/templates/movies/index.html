@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Movies|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
+    <div class="flex flex-col">
+        <span class="text-4xl font-bold w-screen text-center">Movies</span>
+    </div>
+    <div th:if="${#lists.isEmpty(movies)}">
+        <span>No movies to display</span>
+    </div>
+    <div class="flex flex-col" th:unless="${#lists.isEmpty(movies)}">
+        <span class="text-slate-700" th:text="|${#lists.size(movies)} movies in the database|"></span>
+        <div class="flex flex-wrap space-x-5 p-8">
+            <div class="flex flex-col justify-center" th:each="movie : ${movies}">
+                <div th:if="${movie.imageUrl}">
+                    <a th:href="|@{/movies/}${movie.id}|">
+                        <img class="w-[220px] h-[330px] rounded-2xl" th:src="${movie.imageUrl}"
+                             th:alt="|${movie.title} cover image|"/>
+                    </a>
+                </div>
+                <div class="w-[220px] h-[330px] bg-slate-400 rounded-2xl" th:unless="${movie.imageUrl}">
+                    <a class="w-full h-full flex" th:href="|@{/movies/}${movie.id}|">
+                        <span class="text-xl text-center m-auto">N/A</span>
+                    </a>
+                </div>
+                <a th:href="|@{/movies/}${movie.id}|">
+                    <span class="text-center hover:underline" th:text="|${movie.title} (${movie.year})|"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -3,22 +3,22 @@ package dev.aest.siw.movie.controller;
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.service.CredentialsService;
+import dev.aest.siw.movie.validation.CredentialsValidator;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping
+@RequiredArgsConstructor
 public class AuthController
 {
     private static final String authorizationRequestBaseUri = "oauth2/authorization/";
@@ -27,10 +27,7 @@ public class AuthController
     }};
 
     private final CredentialsService credentialsService;
-
-    public AuthController(CredentialsService credentialsService) {
-        this.credentialsService = credentialsService;
-    }
+    private final CredentialsValidator credentialsValidator;
 
     @GetMapping("/register")
     public String registerPage(Model model){
@@ -40,23 +37,28 @@ public class AuthController
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") User user,
-                             BindingResult userBindingResult,
-                             @Valid @ModelAttribute("credentials") Credentials credentials,
-                             BindingResult credentialsBindingResult,
-                             RedirectAttributes redirect) throws IOException {
-        if(!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
+    public String registerUser(
+            @Valid @ModelAttribute("user") final User user,
+            BindingResult userBinding,
+            @Valid @ModelAttribute("credentials") final Credentials credentials,
+            BindingResult credentialsBinding,
+            Model model) {
+        this.credentialsValidator.validate(credentials, credentialsBinding);
+        if(!userBinding.hasErrors() && !credentialsBinding.hasErrors()) {
             credentials.setUser(user);
             credentialsService.saveCredentials(credentials);
-            redirect.addFlashAttribute("user", user);
+            model.addAttribute("user", user);
             return "auth/successfulRegister";
         }
         return "auth/formRegister";
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model){
+    public String loginPage(
+            @RequestParam(value = "error", required = false) final Boolean loginError,
+            Model model){
         model.addAttribute("urls", oauth2AuthenticationUrls);
+        model.addAttribute("error", loginError);
         return "auth/formLogin";
     }
 

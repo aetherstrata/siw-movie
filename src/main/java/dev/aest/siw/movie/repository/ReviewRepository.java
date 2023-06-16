@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>
 {
-    public List<Review> findAllByMovie(Movie movie);
-    public Page<Review> findAllByMovie(Movie movie, Pageable pageable);
+    List<Review> findAllByMovie(Movie movie);
+    Page<Review> findAllByMovie(Movie movie, Pageable pageable);
 
+    long countByMovie(Movie movie);
 }

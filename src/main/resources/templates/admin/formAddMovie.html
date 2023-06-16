@@ -3,7 +3,7 @@
 <head>
   <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title th:text="|${project} - Register|">Title</title>
+  <title th:text="|${project} - New movie|">Title</title>
   <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -13,7 +13,7 @@
     <h2 class="text-3xl font-bold text-center">Add new movie</h2>
     <div class="mt-8 max-w-lg">
       <div class="grid grid-cols-1 gap-6">
-        <form th:action="@{/movies/new}" method="post" enctype="multipart/form-data" class="space-y-4 w-96">
+        <form th:action="@{/admin/movies/new}" method="post" enctype="multipart/form-data" class="space-y-4 w-96">
           <label class="block">
             <span class="form-input-title">Title</span>
             <input
@@ -37,10 +37,20 @@
           </label>
           <div class="form-validation-error" th:if="${#fields.hasErrors('movie.year')}" th:errors="${movie.year}"></div>
           <label class="block">
+            <span class="form-input-title">Synopsis</span>
+            <textarea
+                    th:field="${movie.synopsis}"
+                    placeholder="Insert a synopsis..."
+                    rows="3"
+                    class="form-input-field"
+            >
+            </textarea>
+          </label>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('movie.synopsis')}" th:errors="${movie.synopsis}"></div>
+          <label class="block">
             <span class="form-input-title">Image</span>
             <input
                     name="image"
-                    required
                     placeholder=""
                     type="file"
                     accept="image/*"
@@ -52,11 +62,12 @@
               <input
                       type="submit"
                       class="primary-action-button"
-                      value="Add new movie"
+                      value="Add to database"
               />
             </label>
           </div>
         </form>
+        <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('movie')}" th:text="${err}"></div>
       </div>
     </div>
   </div>

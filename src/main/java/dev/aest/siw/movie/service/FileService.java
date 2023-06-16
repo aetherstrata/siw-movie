@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ public abstract class FileService implements IFileService
         try {
             Files.createDirectories(root);
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload! => " + root);
+            throw new RuntimeException("Could not initialize folder for upload! => " + root + "\nInner exception: " + e.getMessage());
         }
     }
 
@@ -35,7 +36,7 @@ public abstract class FileService implements IFileService
         Path filepath = this.root.resolve(UUID.randomUUID() + "-" + file.getOriginalFilename());
         try {
             Files.copy(file.getInputStream(), filepath);
-            return root.relativize(filepath);
+            return Paths.get("").relativize(filepath);
         } catch (FileAlreadyExistsException e) {
             throw new RuntimeException("A file of that name already exists. => " + filepath);
         } catch (Exception e) {
@@ -48,10 +49,8 @@ public abstract class FileService implements IFileService
         try {
             Path file = root.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
-
             if (resource.isReadable())
                 return resource;
-
             throw new RuntimeException("Could not read file! => " + file.toAbsolutePath());
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());

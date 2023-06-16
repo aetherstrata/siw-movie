@@ -2,6 +2,7 @@ package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.repository.CredentialsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +17,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CredentialsService implements UserDetailsService
 {
     private final CredentialsRepository credentialsRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public CredentialsService(PasswordEncoder passwordEncoder, CredentialsRepository credentialsRepository) {
-        this.passwordEncoder = passwordEncoder;
-        this.credentialsRepository = credentialsRepository;
-    }
 
     public boolean isOAuth(Authentication auth){
         return auth instanceof OAuth2AuthenticationToken;

@@ -692,10 +692,10 @@ select{
 
 .form-validation-error{
   margin-top: 0.25rem;
-  border-radius: 0.25rem;
+  border-radius: 0.75rem;
   --tw-bg-opacity: 1;
   background-color: rgb(252 165 165 / var(--tw-bg-opacity));
-  padding: 1.25rem;
+  padding: 0.5rem;
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
@@ -764,6 +764,10 @@ select{
   margin: auto;
 }
 
+.mt-1{
+  margin-top: 0.25rem;
+}
+
 .mt-8{
   margin-top: 2rem;
 }
@@ -788,16 +792,52 @@ select{
   height: 2px;
 }
 
+.h-\[330px\]{
+  height: 330px;
+}
+
+.h-\[660px\]{
+  height: 660px;
+}
+
 .h-full{
   height: 100%;
+}
+
+.min-h-full{
+  min-height: 100%;
+}
+
+.w-1\/10{
+  width: 10%;
 }
 
 .w-1\/2{
   width: 50%;
 }
 
+.w-256{
+  width: 64rem;
+}
+
 .w-96{
   width: 24rem;
+}
+
+.w-\[220px\]{
+  width: 220px;
+}
+
+.w-\[2px\]{
+  width: 2px;
+}
+
+.w-\[440px\]{
+  width: 440px;
+}
+
+.w-full{
+  width: 100%;
 }
 
 .w-screen{
@@ -816,8 +856,16 @@ select{
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
+.flex-row{
+  flex-direction: row;
+}
+
 .flex-col{
   flex-direction: column;
+}
+
+.flex-wrap{
+  flex-wrap: wrap;
 }
 
 .place-content-center{
@@ -850,6 +898,12 @@ select{
   margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-y-12 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+
 .space-y-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
@@ -862,6 +916,10 @@ select{
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
+.place-self-center{
+  place-self: center;
+}
+
 .whitespace-nowrap{
   white-space: nowrap;
 }
@@ -870,13 +928,30 @@ select{
   border-radius: 0.25rem;
 }
 
+.rounded-2xl{
+  border-radius: 1rem;
+}
+
+.rounded-md{
+  border-radius: 0.375rem;
+}
+
 .rounded-xl{
   border-radius: 0.75rem;
+}
+
+.border-transparent{
+  border-color: transparent;
 }
 
 .bg-blue-500{
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.bg-gray-100{
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-sky-100{
@@ -903,9 +978,18 @@ select{
   padding: 1.25rem;
 }
 
+.p-8{
+  padding: 2rem;
+}
+
 .px-4{
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.px-5{
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .px-6{
@@ -949,8 +1033,17 @@ select{
   text-align: center;
 }
 
+.align-middle{
+  vertical-align: middle;
+}
+
 .font-comfortaa{
   font-family: Comfortaa, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.text-2xl{
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-3xl{
@@ -996,6 +1089,11 @@ select{
   color: rgb(240 249 255 / var(--tw-text-opacity));
 }
 
+.text-slate-700{
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity));
+}
+
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1013,6 +1111,22 @@ select{
 
 .hover\:underline:hover{
   text-decoration-line: underline;
+}
+
+.focus\:border-gray-500:focus{
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.focus\:bg-white:focus{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.focus\:ring-0:focus{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
 @media (min-width: 640px){

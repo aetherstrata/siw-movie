@@ -30,6 +30,9 @@ public class Movie
     @Max(2023)
     private Integer year;
 
+    @Column(length = 1023)
+    private String synopsis;
+
     private String imageUrl;
 
     private LocalDateTime createdAt;

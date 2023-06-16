@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Movies|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
+    <span class="text-4xl font-bold w-screen text-center" th:text="${movie.title}"></span>
+    <div class="flex flex-row w-256 place-self-center">
+        <div>
+            <img th:if="${movie.imageUrl}" th:src="|/${movie.imageUrl}|" th:alt="|${movie.title} cover image|"
+                 class="w-[440px] h-[660px] rounded-2xl"/>
+            <div th:unless="${movie.imageUrl}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
+                <span class="text-3xl m-auto">N/A</span>
+            </div>
+        </div>
+        <div class="w-1/10"></div>
+        <div class="w-[2px] h-[660px] rounded bg-slate-400"></div>
+        <div class="w-1/10"></div>
+        <div class="flex flex-col place-content-center align-middle min-h-full">
+            <span class="text-2xl"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></span>
+            <span class="text-2xl"><span class="font-bold">Directed by</span>
+                <a th:if="${movie.director}" th:href="|@{/artists/}${movie.director.id}|">
+                    <span class="hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
+                </a>
+                <span th:unless="${movie.director}">N/A</span>
+            </span>
+            <span class="text-2xl font-bold" th:text="|Reviews (${reviewsCount})|"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

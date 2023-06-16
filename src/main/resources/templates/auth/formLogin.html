@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:tf="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -33,6 +33,7 @@
                             class="form-input-field"
                     />
                 </label>
+                <div class="form-validation-error" th:if="${error}" th:text="#{login.error}"></div>
                 <div class="flex justify-center">
                     <label class="inline-flex items-center mt-8">
                         <input

@@ -28,7 +28,7 @@ public class Artist
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
-	private String urlOfPicture;
+	private String imageUrl;
 	
 	@ManyToMany(mappedBy="actors")
 	private Set<Movie> starredMovies;

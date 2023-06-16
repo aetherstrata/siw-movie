@@ -37,13 +37,13 @@ public class Review
     @Max(10)
     private Integer score;
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, length = 127)
     @NotBlank
-    @Size(max = 128, message = "The review title must be shorter than 128 characters")
+    @Size(max = 127, message = "The review title must be shorter than 128 characters")
     private String title;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column(nullable = false, length = 4095)
+    @Size(max = 4095, message = "The review must be shorter than 4096 characters")
     private String text;
 
     @PrePersist
