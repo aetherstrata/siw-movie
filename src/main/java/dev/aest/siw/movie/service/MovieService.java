@@ -2,6 +2,7 @@ package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.MovieRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,17 @@ public class MovieService
 
     @Transactional(readOnly = true)
     public Page<Movie> getMoviePage(int page){
+        return getMoviePage(page, MAX_PAGE_SIZE);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Movie> getMovieByYearPage(int year, int page, int size){
+        Pageable paging = PageRequest.of(page, Math.min(size, MAX_PAGE_SIZE));
+        return movieRepository.findByYear(year, paging);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Movie> getMovieByYearPage(int year, int page){
         return getMoviePage(page, MAX_PAGE_SIZE);
     }
 

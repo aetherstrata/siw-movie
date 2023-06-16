@@ -2,6 +2,7 @@ package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.model.Review;
+import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +52,16 @@ public class ReviewService
     @Transactional(readOnly = true)
     public long getCountByMovie(Movie movie){
         return reviewRepository.countByMovie(movie);
+    }
+
+    /**
+     * Get the review of a {@link User} for a {@link Movie}
+     * @param user the user to query against
+     * @param movie the movie to query against
+     * @return An {@link Optional} {@link Review}
+     */
+    @Transactional(readOnly = true)
+    public Optional<Review> getUserReview(User user, Movie movie) {
+        return reviewRepository.findByMovieAndUser(movie, user);
     }
 }

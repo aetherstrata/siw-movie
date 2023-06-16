@@ -1,0 +1,53 @@
+#==================================which checks that a character sequence's trimmed length is not empty:
+# = Persistence
+#==================================
+spring.jpa.database=POSTGRESQL
+spring.jpa.show-sql=true
+spring.jpa.open-in-view=false
+logging.level.root=info
+logging.level.org.hibernate.SQL=debug
+logging.level.org.hibernate.type.descriptor.sql=trace
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=<YOUR-CONNECTION-STRING>
+spring.datasource.username=<YOUR-DATABASE-USERNAME>
+spring.datasource.password=<YOUR-DATABASE-PASSWORD>
+#==================================
+# = Web server
+#==================================
+server.port=8080
+server.error.whitelabel.enabled=false
+server.error.include-stacktrace=always
+server.servlet.session.tracking-modes=COOKIE
+#==================================
+# = Messages
+#==================================
+spring.messages.basename=messages/messages
+spring.messages.encoding=UTF-8
+#==================================
+# = Thymeleaf configurations
+#==================================
+spring.thymeleaf.check-template-location=true
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.servlet.content-type=text/html
+spring.thymeleaf.cache=false
+spring.thymeleaf.enabled=true
+spring.thymeleaf.encoding=UTF-8
+spring.thymeleaf.mode=HTML
+#=================================
+# = Security
+#=================================
+spring.security.oauth2.client.registration.github.client-id=<YOUR-CLIENT-ID>
+spring.security.oauth2.client.registration.github.client-secret=<YOUR-CLIENT-SECRET>
+#=================================
+# = Servlet
+#=================================
+spring.servlet.multipart.max-file-size=4MB
+spring.servlet.multipart.max-request-size=4MB
+#=================================
+# = Data
+#=================================
+spring.data.web.pageable.one-indexed-parameters=true

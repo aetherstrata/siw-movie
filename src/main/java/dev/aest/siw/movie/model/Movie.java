@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "movies")
+@Table(name = "movies", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
 public class Movie
 {
     @Id
