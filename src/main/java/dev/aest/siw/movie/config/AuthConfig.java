@@ -56,8 +56,8 @@ public class AuthConfig
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().cors().disable()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/","/register", "/movies", "/movies/*", "/artists", "/artists/*", "/css/**", "/images/**", "/uploads/**", "/favicon.ico").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/","/register", "/movies", "/movies/{id}", "/search/movies", "/artists", "/artists/{id}", "/search/artists", "/css/**", "/images/**", "/uploads/**", "/favicon.ico").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register", "/login", "/movies/search").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY)
                         .anyRequest().authenticated()
                 )
