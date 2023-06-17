@@ -22,6 +22,17 @@ public class ReviewService
     private final ReviewRepository reviewRepository;
 
     /**
+     * Get a {@link Page} of {@link Review Reviews} with the given {@link Pageable}
+     * @param movie the movie to retrieve the reviews for
+     * @param pageable the paging information
+     * @return the corresponding {@link Page}. It will be {@code empty} if no item satisfies the query.
+     */
+    @Transactional(readOnly = true)
+    public Page<Review> getReviewPage(Movie movie, Pageable pageable){
+        return reviewRepository.findAllByMovie(movie, pageable);
+    }
+
+    /**
      * Get a {@link Page} of {@link Review Reviews} of the given size
      * @param movie the movie to retrieve the reviews for
      * @param page the page index
@@ -30,14 +41,13 @@ public class ReviewService
      */
     @Transactional(readOnly = true)
     public Page<Review> getReviewPage(Movie movie, int page, int size){
-        Pageable paging = PageRequest.of(page, Math.min(size, MAX_PAGE_SIZE));
-        return reviewRepository.findAllByMovie(movie, paging);
+        return getReviewPage(movie, PageRequest.of(page, Math.min(size, MAX_PAGE_SIZE)));
     }
 
     /**
      * Get a {@link Page} of {@link Review Reviews}<br>
      * See {@link ReviewService#getReviewPage(Movie, int, int)} for more info
-     * @return a maximum size {@link Page} of {@link Review Reviews}
+     * @return a maximum size {@link Page} of {@link Review Reviews}. It will be {@code empty} if no item satisfies the query.
      */
     @Transactional(readOnly = true)
     public Page<Review> getReviewPage(Movie movie, int page){
@@ -61,7 +71,12 @@ public class ReviewService
      * @return An {@link Optional} {@link Review}
      */
     @Transactional(readOnly = true)
-    public Optional<Review> getUserReview(User user, Movie movie) {
-        return reviewRepository.findByMovieAndUser(movie, user);
+    public Review getUserReview(User user, Movie movie) {
+        return reviewRepository.findByMovieAndUser(movie, user).orElse(null);
+    }
+
+    @Transactional
+    public void saveReview(Review review) {
+        reviewRepository.save(review);
     }
 }
