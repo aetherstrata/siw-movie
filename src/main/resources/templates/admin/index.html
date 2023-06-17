@@ -3,11 +3,34 @@
 <head>
   <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title th:text="|${project} - Admin|">Title</title>
+  <title th:text="|${project} - Admin panel|">Title</title>
   <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<span>Admin panel</span>
+<div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
+  <div class="flex flex-row">
+    <div class="flex flex-col w-96">
+      <span class="w-full text-4xl text-center font-bold">Movies</span>
+      <div class="flex flex-col space-y-4 px-4 py-8">
+        <a th:href="@{/admin/movies/new}" class="w-fit">
+          <button class="p-2 text-white bg-blue-500 rounded hover:bg-blue-700">Add new</button>
+        </a>
+      </div>
+    </div>
+    <div class="flex flex-col w-96">
+      <span class="w-full text-4xl text-center font-bold">Artists</span>
+      <div class="flex flex-col space-y-4 px-4 py-8">
+        <a th:href="@{/admin/artists/new}" class="w-fit">
+          <button class="p-2 text-white bg-blue-500 rounded hover:bg-blue-700">Add new</button>
+        </a>
+      </div>
+    </div>
+    <div class="flex flex-col w-96">
+      <span class="w-full text-4xl text-center font-bold mb-8">Reviews</span>
+
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -16,7 +16,7 @@
         <span>No movies to display</span>
     </div>
     <div class="flex flex-col" th:unless="${#lists.isEmpty(movies)}">
-        <span class="text-slate-700" th:text="|${#lists.size(movies)} movies in the database|"></span>
+        <span class="text-slate-700" th:text="|${pageInfo.totalElements} movies in the database|"></span>
         <div class="flex flex-wrap space-x-5 p-8">
             <div class="flex flex-col justify-center" th:each="movie : ${movies}">
                 <div th:if="${movie.imageUrl}">
@@ -35,6 +35,7 @@
                 </a>
             </div>
         </div>
+        <div th:replace="~{fragments/turnPage :: pageTurn (${pageInfo})}"></div>
     </div>
 </div>
 </body>

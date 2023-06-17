@@ -10,7 +10,7 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
     <span class="text-4xl font-bold w-screen text-center" th:text="${movie.title}"></span>
-    <div class="flex flex-row w-256 place-self-center">
+    <div class="flex flex-row place-self-center w-256">
         <div>
             <img th:if="${movie.imageUrl}" th:src="|/${movie.imageUrl}|" th:alt="|${movie.title} cover image|"
                  class="w-[440px] h-[660px] rounded-2xl"/>
@@ -18,27 +18,43 @@
                 <span class="text-3xl m-auto">N/A</span>
             </div>
         </div>
-        <div class="w-1/10"></div>
+        <div class="w-4"></div>
         <div class="w-[2px] h-[660px] rounded bg-slate-400"></div>
-        <div class="w-1/10"></div>
-        <div class="flex flex-col place-content-center align-middle min-h-full">
-            <span class="text-2xl"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></span>
-            <span class="text-2xl"><span class="font-bold">Directed by</span>
-                <a th:if="${movie.director}" th:href="|@{/artists/}${movie.director.id}|">
+        <div class="w-4"></div>
+        <div class="flex flex-col place-content-center align-middle min-h-full max-w-lg">
+            <span class="text-2xl mb-2"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></span>
+            <span class="text-2xl font-bold" th:if="${movie.synopsis}">Synopsis</span>
+            <span class="text-2xl mb-2" th:if="${movie.synopsis}" th:text="${movie.synopsis}"></span>
+            <span class="text-2xl mb-2" th:if="${movie.director}"><span class="font-bold">Directed by</span>
+                <a th:href="|@{/artists/}${movie.director.id}|">
                     <span class="hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
                 </a>
-                <span th:unless="${movie.director}">N/A</span>
             </span>
-            <span class="text-2xl font-bold">Actors</span>
-            <span th:each="actor : ${movie.actors}" th:text="actor"></span>
-            <span class="text-2xl font-bold" th:text="|Reviews (${reviewsCount})|"></span>
+            <span th:unless="${#lists.isEmpty(movie.actors)}" class="text-2xl font-bold">Actors</span>
+            <span th:unless="${#lists.isEmpty(movie.actors)}" th:each="actor : ${movie.actors}" th:text="actor"></span>
+            <span class="text-2xl"><span th:text="|Reviews (${pageInfo.totalElements()})|" class="font-bold"></span>
+                <a th:unless="${currentUserReview}" th:href="@{/movies/{id}/addReview(id=${movie.id})}">
+                    <span class="hover:underline">Add review</span>
+                </a>
+            </span>
         </div>
     </div>
 </div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
-    <div>
-
+    <div th:each="review : ${reviews}" class="flex flex-col w-256 m-auto">
+        <div class="flex flex-row justify-between">
+            <span class="mx-4">
+                <span th:text="${review.title}" class="text-xl font-bold"></span>
+                <span class="text-lg">by</span>
+                <span th:text="|${review.user.name} ${review.user.surname}|" class="text-lg font-bold"></span>
+            </span>
+            <span th:text="|${review.score}/5|" class="text-2xl font-bold"></span>
+        </div>
+        <div th:if="${review.text}" class="rounded-2xl bg-slate-200 p-5">
+            <span th:text="${review.text}"></span>
+        </div>
     </div>
+    <div th:replace="~{fragments/turnPage :: pageTurn (${pageInfo})}"></div>
 </div>
 </body>
 </html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Add review|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
+    <div class="antialiased text-gray-900 px-6 py-12 max-w-lg">
+        <h2 class="text-3xl font-bold text-center">Add new review</h2>
+        <div class="mt-8 max-w-lg">
+            <div class="grid grid-cols-1 gap-6">
+                <form th:action="${requestUrl}" method="post" class="space-y-4 w-96">
+                    <div class="flex flex-row space-x-4">
+                        <label class="block w-4/5">
+                            <span class="form-input-title">Title</span>
+                            <input
+                                    th:field="${review.title}"
+                                    required
+                                    placeholder=""
+                                    type="text"
+                                    class="form-input-field"
+                            />
+                        </label>
+                        <label class="block w-1/5">
+                            <span class="form-input-title">Score</span>
+                            <select th:field="${review.score}" class="form-input-field" required>
+                                <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.score')}" th:errors="${review.score}"></div>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.title')}" th:errors="${review.title}"></div>
+                    <label class="block">
+                        <span class="form-input-title">Review</span>
+                        <textarea
+                                th:field="${review.text}"
+                                placeholder="Write your review here..."
+                                rows="5"
+                                class="form-input-field"
+                        >
+                        </textarea>
+                    </label>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.text')}" th:errors="${review.text}"></div>
+                    <div class="flex justify-center">
+                        <label class="inline-flex items-center mt-8">
+                            <input
+                                    type="submit"
+                                    class="primary-action-button"
+                                    value="Add to movie"
+                            />
+                        </label>
+                    </div>
+                </form>
+                <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('review')}" th:text="${err}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
