@@ -2,18 +2,16 @@ package dev.aest.siw.movie.validation;
 
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.repository.CredentialsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
+@RequiredArgsConstructor
 public class CredentialsValidator implements Validator
 {
     private final CredentialsRepository repository;
-
-    public CredentialsValidator(CredentialsRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public boolean supports(Class<?> type) {
