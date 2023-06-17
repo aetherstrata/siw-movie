@@ -3,9 +3,7 @@ package dev.aest.siw.movie.service;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +37,9 @@ public class UserService
      */
     @Transactional(readOnly = true)
     public User getCurrentUser(Principal principal) {
-        Optional<User> result = this.userRepository.findByUsername(principal.getName());
-        return result.orElse(null);
+        return principal == null
+                ? null
+                : this.userRepository.findByUsername(principal.getName()).orElse(null);
     }
 
 
