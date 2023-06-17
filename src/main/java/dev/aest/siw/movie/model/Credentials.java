@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Credentials implements UserDetails
+public final class Credentials implements UserDetails
 {
     public static final String DEFAULT_AUTHORITY = "REGISTERED";
     public static final String ADMIN_AUTHORITY = "ADMIN";

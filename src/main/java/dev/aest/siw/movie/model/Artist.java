@@ -11,7 +11,7 @@ import java.util.*;
 @Entity
 @Data
 @Table(name = "artists")
-public class Artist
+public final class Artist
 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

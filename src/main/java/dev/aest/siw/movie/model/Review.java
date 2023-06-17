@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = {"movie_id", "user_id"}))
-public class Review
+public final class Review
 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "movies", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
-public class Movie
+public final class Movie
 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
