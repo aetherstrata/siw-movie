@@ -28,6 +28,9 @@ public final class Artist
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateOfDeath;
+
 	private String imageUrl;
 	
 	@ManyToMany(mappedBy="actors")
