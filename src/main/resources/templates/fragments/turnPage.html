@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<!--/*@thymesVar id="pageInfo" type="dev.aest.siw.movie.model.PageInfo"*/-->
+<!--/*@thymesVar id="requestUrl" type="java.lang.String"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>Turn pages</title>
+</head>
+<body>
+<div th:fragment="turnPage (pageInfo)" class="w-full flex flex-row justify-around">
+    <div>
+        <a th:if="${pageInfo.hasPrev}" th:href="@{{request}(page=${pageInfo.number},request=${requestUrl})}" class="w-fit">
+            <button>Previous</button>
+        </a>
+    </div>
+    <span th:text="${pageInfo.number() + 1}" class="text-2xl font-bold"></span>
+    <div>
+        <a th:if="${pageInfo.hasNext}" th:href="@{{request}(page=${pageInfo.number + 2},request=${requestUrl})}" class="w-fit">
+            <button>Next</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>
