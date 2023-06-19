@@ -37,16 +37,6 @@ public class AuthConfig
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
     protected SecurityFilterChain configureHttpSecurity(final HttpSecurity httpSecurity) throws Exception {
         // See https://stackoverflow.com/questions/75222930/spring-boot-3-0-2-adds-continue-query-parameter-to-request-url-after-login
         // HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
@@ -76,5 +66,10 @@ public class AuthConfig
                         .logoutSuccessUrl("/")
                         .permitAll());
         return httpSecurity.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
