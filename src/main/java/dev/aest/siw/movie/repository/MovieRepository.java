@@ -17,7 +17,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long>
     List<Movie> findByYear(int year);
     Page<Movie> findByYear(int year, Pageable pageable);
 
-    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors")
+    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors WHERE m.id=:id")
     Optional<Movie> getFullById(long id);
 
     boolean existsByTitleAndYear(String title, int year);
