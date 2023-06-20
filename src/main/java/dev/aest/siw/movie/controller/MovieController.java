@@ -11,7 +11,6 @@ import dev.aest.siw.movie.service.UserService;
 import dev.aest.siw.movie.validation.ReviewValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -20,13 +19,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class MovieController
 {
-    private final ArtistService artistService;
     private final MovieService movieService;
     private final ReviewService reviewService;
     private final ReviewValidator reviewValidator;

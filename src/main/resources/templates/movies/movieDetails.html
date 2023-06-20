@@ -45,8 +45,9 @@
         <div class="flex flex-row justify-between">
             <span class="mx-4">
                 <span th:text="${review.title}" class="text-xl font-bold"></span>
-                <span class="text-lg">by</span>
-                <span th:text="|${review.user.name} ${review.user.surname}|" class="text-lg font-bold"></span>
+                <span th:if="${review.user.name} or ${review.user.surname}" class="text-lg">by</span>
+                <span th:if="${review.user.name}" th:text="${review.user.name}" class="text-lg font-bold"></span>
+                <span th:if="${review.user.surname}" th:text="${review.user.surname}" class="text-lg font-bold"></span>
             </span>
             <span th:text="|${review.score}/5|" class="text-2xl font-bold"></span>
         </div>
