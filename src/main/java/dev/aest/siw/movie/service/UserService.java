@@ -1,9 +1,11 @@
 package dev.aest.siw.movie.service;
 
+import dev.aest.siw.movie.auth.OAuth2Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +41,9 @@ public class UserService
     public User getCurrentUser(Principal principal) {
         return principal == null
                 ? null
-                : this.userRepository.findByUsername(principal.getName()).orElse(null);
+                : principal instanceof OAuth2AuthenticationToken
+                    ? ((OAuth2Credentials)((OAuth2AuthenticationToken)principal).getPrincipal()).getUser()
+                    : this.userRepository.findByUsername(principal.getName()).orElse(null);
     }
 
 

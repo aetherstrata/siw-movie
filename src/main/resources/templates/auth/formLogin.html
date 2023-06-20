@@ -8,51 +8,66 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
-    <div class="flex flex-col justify-center antialiased text-gray-900 px-6 py-12 max-w-lg">
+<div class="flex flex-col w-screen justify-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
+    <div class="flex flex-col justify-center antialiased text-gray-900 px-6 py-12">
         <span class="text-3xl font-bold text-center">Sign In</span>
-        <div class="mt-8 max-w-lg">
-            <form th:action="@{/login}" method="post" class="space-y-4 w-96">
-                <label class="block">
-                    <span class="form-input-title">Username</span>
-                    <input
-                            required
-                            name="username"
-                            placeholder=""
-                            type="text"
-                            class="form-input-field"
-                    />
-                </label>
-                <label class="block">
-                    <span class="form-input-title">Password</span>
-                    <input
-                            required
-                            name="password"
-                            placeholder=""
-                            type="password"
-                            class="form-input-field"
-                    />
-                </label>
-                <div class="form-validation-error" th:if="${error}" th:text="#{login.error}"></div>
-                <div class="flex justify-center">
-                    <label class="inline-flex items-center mt-8">
+        <div class="flex flex-row justify-center mt-8 space-x-8">
+            <div class="w-128 flex flex-col place-content-evenly">
+                <form th:action="@{/login}" method="post" class="space-y-4 w-96 self-center">
+                    <label class="block">
+                        <span class="form-input-title">Username</span>
                         <input
-                                type="submit"
-                                class="primary-action-button"
-                                value="Sign in"
+                                required
+                                name="username"
+                                placeholder=""
+                                type="text"
+                                class="form-input-field"
                         />
                     </label>
-                </div>
-            </form>
+                    <label class="block">
+                        <span class="form-input-title">Password</span>
+                        <input
+                                required
+                                name="password"
+                                placeholder=""
+                                type="password"
+                                class="form-input-field"
+                        />
+                    </label>
+                    <div class="form-validation-error" th:if="${error}" th:text="#{login.error}"></div>
+                    <div class="flex justify-center">
+                        <label class="inline-flex items-center mt-8">
+                            <input
+                                    type="submit"
+                                    class="primary-action-button"
+                                    value="Sign in"
+                            />
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="h-80 w-[2px] m-auto rounded bg-slate-400"></div>
+            <div class="w-128 flex flex-col place-content-center">
+                <span class=""></span>
+                <a th:href="@{/oauth2/authorization/github}" class="h-fit">
+                    <button class="primary-action-button">
+                        <span class="space-x-4">
+                            <img th:src="@{/images/github-mark-black.png}" class="w-[32px] h-[32px] inline-block" alt="GitHub logo">
+                            <span>Login with GitHub</span>
+                        </span>
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="h-[2px] max-w-lg rounded bg-slate-400"></div>
-    <div class="flex flex-col justify-center antialiased text-gray-900 px-6 py-12 max-w-lg">
+    <div class="h-[2px] w-96 m-auto rounded bg-slate-400"></div>
+    <div class="flex flex-col justify-center antialiased text-gray-900 px-6 py-12">
         <a class="m-auto" th:href="@{/register}">
             <button class="primary-action-button">
                 Register
             </button>
         </a>
     </div>
+</div>
 </body>
 </html>

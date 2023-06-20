@@ -46,7 +46,7 @@ public class CredentialsService implements UserDetailsService
 
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole(Credentials.DEFAULT_AUTHORITY);
+        credentials.setAuthority(Credentials.DEFAULT_AUTHORITY);
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }

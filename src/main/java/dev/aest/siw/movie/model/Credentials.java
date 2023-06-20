@@ -2,8 +2,10 @@ package dev.aest.siw.movie.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,9 +14,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-@Entity
 @Data
-public final class Credentials implements UserDetails
+@Entity
+public class Credentials implements UserDetails, AuthenticatedPrincipal
 {
     public static final String DEFAULT_AUTHORITY = "REGISTERED";
     public static final String ADMIN_AUTHORITY = "ADMIN";
@@ -25,20 +27,24 @@ public final class Credentials implements UserDetails
 
     @Column(unique = true)
     @NotBlank
+    @Pattern(regexp = "^[ A-Za-z0-9_.]*$", message = "Username must contain only alphanumerical characters, dots, dashes and underscores")
     private String username;
 
     @NotBlank
     @Length(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
-    private String role;
+    private String authority;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @OneToOne(cascade = {CascadeType.REMOVE})
     private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
+        return Collections.singleton(new SimpleGrantedAuthority(authority));
     }
 
     @Override
@@ -58,7 +64,7 @@ public final class Credentials implements UserDetails
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override
@@ -74,5 +80,10 @@ public final class Credentials implements UserDetails
     @Override
     public int hashCode() {
         return username.hashCode();
+    }
+
+    @Override
+    public String getName() {
+        return username;
     }
 }

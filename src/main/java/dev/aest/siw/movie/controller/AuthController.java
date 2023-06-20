@@ -3,7 +3,9 @@ package dev.aest.siw.movie.controller;
 import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.service.CredentialsService;
+import dev.aest.siw.movie.service.UserService;
 import dev.aest.siw.movie.validation.CredentialsValidator;
+import dev.aest.siw.movie.validation.UserValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,13 +23,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController
 {
-    private static final String authorizationRequestBaseUri = "oauth2/authorization/";
-    private static final Map<String, String> oauth2AuthenticationUrls = new HashMap<>(){{
-        put("GitHub", authorizationRequestBaseUri + "github");
-    }};
-
     private final CredentialsService credentialsService;
     private final CredentialsValidator credentialsValidator;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
     @GetMapping("/register")
     public String registerPage(Model model){
@@ -43,9 +42,12 @@ public class AuthController
             @Valid @ModelAttribute("credentials") final Credentials credentials,
             BindingResult credentialsBinding,
             Model model) {
+        this.userValidator.validate(user, userBinding);
         this.credentialsValidator.validate(credentials, credentialsBinding);
         if(!userBinding.hasErrors() && !credentialsBinding.hasErrors()) {
+            user.setNickname(credentials.getUsername());
             credentials.setUser(user);
+            userService.saveUser(user);
             credentialsService.saveCredentials(credentials);
             model.addAttribute("user", user);
             return "auth/successfulRegister";
@@ -57,13 +59,17 @@ public class AuthController
     public String loginPage(
             @RequestParam(value = "error", required = false) final Boolean loginError,
             Model model){
-        model.addAttribute("urls", oauth2AuthenticationUrls);
         model.addAttribute("error", loginError);
         return "auth/formLogin";
     }
 
     @GetMapping("/success")
-    public String authenticationSuccess(Model model){
+    public String authenticationSuccess(){
+        return "redirect:/";
+    }
+
+    @GetMapping("/oauth2-success")
+    public String oauth2AuthSuccess(){
         return "redirect:/";
     }
 }

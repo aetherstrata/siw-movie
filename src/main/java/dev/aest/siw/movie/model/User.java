@@ -8,8 +8,8 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
 @Table(name = "users")
 public final class User
 {
@@ -17,10 +17,12 @@ public final class User
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotBlank
     @Email
     private String email;
+
+    private String nickname;
 
     private String name;
 

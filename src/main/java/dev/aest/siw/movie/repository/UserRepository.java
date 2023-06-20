@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long>
 {
     @Query(value = "SELECT * FROM users WHERE id=(SELECT user_id FROM credentials WHERE username=?1) LIMIT 1", nativeQuery = true)
     Optional<User> findByUsername(String username);
+
+    Optional<User> findByEmail(String email);
 }

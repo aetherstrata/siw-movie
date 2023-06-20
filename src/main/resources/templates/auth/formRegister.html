@@ -87,6 +87,8 @@
                         </label>
                     </div>
                 </form>
+                <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('user')}" th:text="${err}"></div>
+                <div class="form-validation-error mt-2" th:each="err : ${#fields.errors('credentials')}" th:text="${err}"></div>
             </div>
         </div>
     </div>
