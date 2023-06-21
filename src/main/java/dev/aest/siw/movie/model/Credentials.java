@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-public class Credentials implements UserDetails, AuthenticatedPrincipal
+public class Credentials implements UserDetails
 {
     public static final String DEFAULT_AUTHORITY = "REGISTERED";
     public static final String ADMIN_AUTHORITY = "ADMIN";
@@ -27,7 +27,7 @@ public class Credentials implements UserDetails, AuthenticatedPrincipal
 
     @Column(unique = true)
     @NotBlank
-    @Pattern(regexp = "^[ A-Za-z0-9_.]*$", message = "Username must contain only alphanumerical characters, dots, dashes and underscores")
+    @Pattern(regexp = "^[A-Za-z0-9_.]+$", message = "Username must contain only alphanumerical characters, dots, dashes and underscores")
     private String username;
 
     @NotBlank
@@ -80,10 +80,5 @@ public class Credentials implements UserDetails, AuthenticatedPrincipal
     @Override
     public int hashCode() {
         return username.hashCode();
-    }
-
-    @Override
-    public String getName() {
-        return username;
     }
 }
