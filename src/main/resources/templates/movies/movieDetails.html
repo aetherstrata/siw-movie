@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
-    <span class="text-4xl font-bold w-screen text-center" th:text="${movie.title}"></span>
+    <span class="text-4xl font-bold m-auto text-center" th:text="${movie.title}"></span>
     <div class="flex flex-row place-self-center w-256">
         <div>
             <img th:if="${movie.imageUrl}" th:src="|/${movie.imageUrl}|" th:alt="|${movie.title} cover image|"
@@ -31,16 +31,27 @@
                 </a>
             </span>
             <span th:unless="${#lists.isEmpty(movie.actors)}" class="text-2xl font-bold">Actors</span>
-            <span th:unless="${#lists.isEmpty(movie.actors)}" th:each="actor : ${movie.actors}" th:text="actor"></span>
+            <a th:each="actor : ${movie.actors}" th:text="actor" class="hover:underline"></a>
             <span class="text-2xl"><span th:text="|Reviews (${pageInfo.totalElements()})|" class="font-bold"></span>
-                <a th:unless="${currentUserReview}" th:href="@{/movies/{id}/addReview(id=${movie.id})}">
+                <a sec:authorize="isAuthenticated()" th:unless="${currentUserReview}" th:href="@{/movies/{id}/addReview(id=${movie.id})}">
                     <span class="hover:underline">Add review</span>
                 </a>
             </span>
         </div>
     </div>
+    <div sec:authorize="hasAuthority('ADMIN')" class="flex flex-row place-content-center space-x-4">
+        <a th:href="@{/admin/movies/{movieId}/update(movieId=${movie.id})}">
+            <button class="primary-action-button">Update info</button>
+        </a>
+        <a th:href="@{/admin/movies/{movieId}/updateDirector(movieId=${movie.id})}">
+            <button class="primary-action-button">Update director</button>
+        </a>
+        <a th:href="@{/admin/movies/{movieId}/updateActors(movieId=${movie.id})}">
+            <button class="primary-action-button">Update actors</button>
+        </a>
+    </div>
 </div>
-<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
+<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 space-y-12 font-comfortaa">
     <div th:each="review : ${reviews}" class="flex flex-col w-256 m-auto">
         <div class="flex flex-row justify-between">
             <span class="mx-4">
@@ -54,6 +65,11 @@
         <div th:if="${review.text}" class="rounded-2xl bg-slate-200 p-5">
             <span th:text="${review.text}"></span>
         </div>
+        <form th:action="@{/admin/deleteReview/{id}(id=${review.id})}" method="post" class="space-y-4 w-96">
+            <button sec:authorize="hasAuthority('ADMIN')" class="bg-slate-400 p-2">
+                Delete this review
+            </button>
+        </form>
     </div>
     <div th:replace="~{fragments/turnPage :: turnPage (${pageInfo})}"></div>
 </div>

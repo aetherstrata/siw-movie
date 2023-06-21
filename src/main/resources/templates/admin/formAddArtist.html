@@ -37,7 +37,7 @@
           </label>
           <div class="form-validation-error" th:if="${#fields.hasErrors('artist.surname')}" th:errors="${artist.surname}"></div>
           <label class="block">
-            <span class="form-input-title">Birthdate</span>
+            <span class="form-input-title">Date of birth</span>
             <input
                     th:field="${artist.dateOfBirth}"
                     placeholder=""
@@ -47,7 +47,7 @@
           </label>
           <div class="form-validation-error" th:if="${#fields.hasErrors('artist.dateOfBirth')}" th:errors="${artist.dateOfBirth}"></div>
           <label class="block">
-            <span class="form-input-title">Birthdate</span>
+            <span class="form-input-title">Date of death</span>
             <input
                     th:field="${artist.dateOfDeath}"
                     placeholder=""

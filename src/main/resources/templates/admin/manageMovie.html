@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Update movie|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="flex flex-col place-content-center px-6 py-12 font-comfortaa">
+    <div class="text-gray-900 px-6 py-12 m-auto max-w-lg">
+        <h2 class="text-3xl font-bold text-center">Update movie info</h2>
+        <div class="mt-8 max-w-lg">
+            <div class="grid grid-cols-1 gap-6">
+                <form th:action="@{/admin/movies/{id}/update(id=${movie.id})}" method="post" enctype="multipart/form-data" class="space-y-4 w-96">
+                    <label class="block">
+                        <span class="form-input-title">Title</span>
+                        <input
+                                th:field="${movie.title}"
+                                required
+                                placeholder=""
+                                type="text"
+                                class="form-input-field"
+                        />
+                    </label>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('movie.title')}" th:errors="${movie.title}"></div>
+                    <label class="block">
+                        <span class="form-input-title">Year</span>
+                        <input
+                                th:field="${movie.year}"
+                                required
+                                placeholder=""
+                                type="number"
+                                class="form-input-field"
+                        />
+                    </label>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('movie.year')}" th:errors="${movie.year}"></div>
+                    <label class="block">
+                        <span class="form-input-title">Synopsis</span>
+                        <textarea
+                                th:field="${movie.synopsis}"
+                                placeholder="Insert a synopsis..."
+                                rows="5"
+                                class="form-input-field"
+                        >
+                        </textarea>
+                    </label>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('movie.synopsis')}" th:errors="${movie.synopsis}"></div>
+                    <label class="block">
+                        <span class="form-input-title">Image</span>
+                        <input
+                                name="image"
+                                placeholder=""
+                                type="file"
+                                accept="image/*"
+                                class="form-input-field"
+                        />
+                    </label>
+                    <div class="flex justify-center">
+                        <label class="inline-flex items-center mt-8">
+                            <input
+                                    type="submit"
+                                    class="primary-action-button"
+                                    value="Update database"
+                            />
+                        </label>
+                    </div>
+                </form>
+                <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('movie')}" th:text="${err}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

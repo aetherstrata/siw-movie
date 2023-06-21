@@ -34,7 +34,7 @@ public final class Review
     @Column(nullable = false)
     @NotNull
     @Min(1)
-    @Max(10)
+    @Max(5)
     private Integer score;
 
     @Column(nullable = false, length = 127)

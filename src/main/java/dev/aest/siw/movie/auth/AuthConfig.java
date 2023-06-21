@@ -37,7 +37,6 @@ import static dev.aest.siw.movie.model.Credentials.DEFAULT_AUTHORITY;
 @RequiredArgsConstructor
 public class AuthConfig
 {
-    private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
     private final CredentialsService credentialsService;
     private final UserRepository userRepository;
@@ -45,12 +44,12 @@ public class AuthConfig
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(credentialsService)
-                .passwordEncoder(passwordEncoder)
-                .and()
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .authoritiesByUsernameQuery("SELECT username, role FROM credentials WHERE username=?")
-                .usersByUsernameQuery("SELECT username, password, 1 AS enabled FROM credentials WHERE username=?");
+                .passwordEncoder(passwordEncoder);
+                //.and()
+                //.jdbcAuthentication()
+                //.dataSource(dataSource)
+               // .authoritiesByUsernameQuery("SELECT username, role FROM credentials WHERE username=?")
+              //  .usersByUsernameQuery("SELECT username, password, enabled AS enabled FROM credentials WHERE username=?");
     }
 
     @Bean
@@ -99,13 +98,13 @@ public class AuthConfig
         return request -> {
             OAuth2User oauth2User = delegate.loadUser(request);
 
+            Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(DEFAULT_AUTHORITY));
+
             // Extract relevant information from the OAuth2User object
             String email = oauth2User.getAttribute("email");
             String username = oauth2User.getAttribute("login");
             String name =  oauth2User.getAttribute("name");
             String provider = request.getClientRegistration().getRegistrationId();
-
-            Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(DEFAULT_AUTHORITY));
 
             // Check if the user already exists in the database
             Optional<User> existingUser = userRepository.findByEmail(email);

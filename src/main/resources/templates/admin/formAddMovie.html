@@ -8,8 +8,8 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div class="grid w-screen place-content-center antialiased text-gray-900 px-6 py-12 font-comfortaa">
-  <div class="antialiased text-gray-900 px-6 py-12 max-w-lg">
+<div class="flex flex-col place-content-center px-6 py-12 font-comfortaa">
+  <div class="text-gray-900 px-6 py-12 max-w-lg">
     <h2 class="text-3xl font-bold text-center">Add new movie</h2>
     <div class="mt-8 max-w-lg">
       <div class="grid grid-cols-1 gap-6">
@@ -41,7 +41,7 @@
             <textarea
                     th:field="${movie.synopsis}"
                     placeholder="Insert a synopsis..."
-                    rows="3"
+                    rows="5"
                     class="form-input-field"
             >
             </textarea>

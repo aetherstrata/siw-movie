@@ -13,9 +13,9 @@
         <h2 class="text-3xl font-bold text-center">Add new review</h2>
         <div class="mt-8 max-w-lg">
             <div class="grid grid-cols-1 gap-6">
-                <form th:action="${requestUrl}" method="post" class="space-y-4 w-96">
+                <form th:action="${requestUrl}" method="post" class="space-y-4 w-128">
                     <div class="flex flex-row space-x-4">
-                        <label class="block w-4/5">
+                        <label class="block w-5/6">
                             <span class="form-input-title">Title</span>
                             <input
                                     th:field="${review.title}"
@@ -25,7 +25,7 @@
                                     class="form-input-field"
                             />
                         </label>
-                        <label class="block w-1/5">
+                        <label class="block w-1/6">
                             <span class="form-input-title">Score</span>
                             <select th:field="${review.score}" class="form-input-field" required>
                                 <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}"></option>

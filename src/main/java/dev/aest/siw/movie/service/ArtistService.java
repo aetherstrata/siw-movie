@@ -56,4 +56,8 @@ public class ArtistService
     public List<Artist> getAllActorsByMovie(Movie movie) {
         return this.artistRepository.findByStarredMoviesContains(movie);
     }
+
+    public Artist getArtist(Long id) {
+        return this.artistRepository.findById(id).orElse(null);
+    }
 }
