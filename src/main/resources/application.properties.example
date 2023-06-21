@@ -9,8 +9,6 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=<YOUR-CONNECTION-STRING>
-spring.datasource.username=<YOUR-DATABASE-USERNAME>
-spring.datasource.password=<YOUR-DATABASE-PASSWORD>
 #==================================
 # = Web server
 #==================================
