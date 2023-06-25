@@ -49,6 +49,9 @@
         <a th:href="@{/admin/movies/{movieId}/updateActors(movieId=${movie.id})}">
             <button class="primary-action-button">Update actors</button>
         </a>
+        <form th:action="@{/admin/movies/{movieId}/delete(movieId=${movie.id})}" method="post">
+            <button class="primary-action-button">Delete movie</button>
+        </form>
     </div>
 </div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 space-y-12 font-comfortaa">

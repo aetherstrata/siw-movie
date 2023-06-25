@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,5 +25,18 @@ public class ArtistController
         model.addAttribute("artists", artistPage.stream().toList());
         model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo<>(artistPage));
         return "artists/index";
+    }
+
+    @GetMapping("/artists/{id}")
+    public String artistDetails(
+            @PathVariable("id") final Long id,
+            Model model
+    ){
+        Artist artist = artistService.getFullArtist(id);
+        if (artist == null){
+            return "artists/notFound";
+        }
+        model.addAttribute("artist", artist);
+        return "artists/artistDetails";
     }
 }
