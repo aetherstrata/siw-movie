@@ -45,11 +45,6 @@ public class AuthConfig
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(credentialsService)
                 .passwordEncoder(passwordEncoder);
-                //.and()
-                //.jdbcAuthentication()
-                //.dataSource(dataSource)
-               // .authoritiesByUsernameQuery("SELECT username, role FROM credentials WHERE username=?")
-              //  .usersByUsernameQuery("SELECT username, password, enabled AS enabled FROM credentials WHERE username=?");
     }
 
     @Bean
@@ -110,8 +105,6 @@ public class AuthConfig
             Optional<User> existingUser = userRepository.findByEmail(email);
             if (existingUser.isPresent()) {
                 User user = existingUser.get();
-
-                // Create a custom OAuth2User implementation
                 return new OAuth2Credentials(user, provider, username, authorities);
             }
 
@@ -119,10 +112,7 @@ public class AuthConfig
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setName(name);
-            newUser.setNickname(username);
             userRepository.save(newUser);
-
-            // Create a custom OAuth2User implementation
             return new OAuth2Credentials(newUser, provider, username, authorities);
 
             //Set<GrantedAuthority> authorities = new HashSet<>(oauth2User.getAuthorities());
