@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class MovieService
@@ -36,8 +34,13 @@ public class MovieService
      * @return the retrieved {@link Movie} with initialized lazy associations, or null if no {@link Movie} with the passed ID could be found in the database
      */
     @Transactional(readOnly = true)
-    public Movie getFullMovie(Long id){
-        return this.movieRepository.getFullById(id).orElse(null);
+    public Movie getDetailedMovie(Long id){
+        return this.movieRepository.getDetailedById(id).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Movie getMovieWithImages(Long id){
+        return this.movieRepository.getWithImagesById(id).orElse(null);
     }
 
     @Transactional(readOnly = true)

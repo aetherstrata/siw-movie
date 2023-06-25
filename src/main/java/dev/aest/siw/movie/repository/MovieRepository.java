@@ -19,7 +19,10 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
     Page<Movie> findByYear(int year, Pageable pageable);
 
     @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors WHERE m.id=:id")
-    Optional<Movie> getFullById(long id);
+    Optional<Movie> getDetailedById(long id);
+
+    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.imageUrls WHERE m.id=:id")
+    Optional<Movie> getWithImagesById(long id);
 
     boolean existsByTitleAndYear(String title, int year);
 }

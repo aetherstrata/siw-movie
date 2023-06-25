@@ -56,7 +56,7 @@ public class MovieController
             Pageable pageable,
             Principal principal,
             Model model) {
-        Movie movie = movieService.getFullMovie(id);
+        Movie movie = movieService.getDetailedMovie(id);
         if (movie == null){
             return "movies/notFound";
         }

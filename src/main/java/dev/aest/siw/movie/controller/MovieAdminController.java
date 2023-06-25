@@ -122,7 +122,7 @@ public class MovieAdminController
     public String updateMovieActors(
             @PathVariable("id") final Long id,
             Model model) {
-        Movie movie = movieService.getFullMovie(id);
+        Movie movie = movieService.getDetailedMovie(id);
         if (movie == null) return "movies/notFound";
         List<Artist> availableArtists = artistRepository.findByStarredMoviesNotContains(movie);
         model.addAttribute("movie", movie);
@@ -134,7 +134,7 @@ public class MovieAdminController
     public String addActorToMovie(
             @PathVariable("movieId") final Long movieId,
             @PathVariable("actorId") final Long actorId) {
-        Movie movie = movieService.getFullMovie(movieId);
+        Movie movie = movieService.getDetailedMovie(movieId);
         Artist actor = artistService.getArtist(actorId);
         if (movie == null) return "movies/notFound";
         if (actor == null) return "artists/notFound";
@@ -148,7 +148,7 @@ public class MovieAdminController
     public String removeActorFromMovie(
             @PathVariable("movieId") final Long movieId,
             @PathVariable("actorId") final Long actorId) {
-        Movie movie = movieService.getFullMovie(movieId);
+        Movie movie = movieService.getDetailedMovie(movieId);
         Artist actor = artistService.getArtist(actorId);
         if (movie == null) return "movies/notFound";
         if (actor == null) return "artists/notFound";
