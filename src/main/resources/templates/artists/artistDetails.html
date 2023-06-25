@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Artist|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
+    <span class="text-4xl font-bold m-auto text-center" th:text="|${artist.name} ${artist.surname}|"></span>
+    <div class="flex flex-row place-self-center w-256">
+        <div>
+            <img th:if="${artist.imageUrl}" th:src="|/${artist.imageUrl}|" th:alt="|${artist.name} ${artist.surname} cover image|"
+                 class="w-[440px] h-[660px] rounded-2xl"/>
+            <div th:unless="${artist.imageUrl}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
+                <span class="text-3xl m-auto">N/A</span>
+            </div>
+        </div>
+        <div class="w-4"></div>
+        <div class="w-[2px] h-[660px] rounded bg-slate-400"></div>
+        <div class="w-4"></div>
+        <div class="flex flex-col place-content-center align-middle min-h-full max-w-lg space-y-2">
+            <span class="text-2xl"><span class="font-bold">Date of birth </span><span th:text="${artist.dateOfBirth}"></span></span>
+            <span class="text-2xl" th:if="${artist.dateOfDeath}"><span class="font-bold">Date of death </span><span th:text="${artist.dateOfDeath}"></span></span>
+            <span class="text-2xl" th:unless="${#lists.isEmpty(artist.directedMovies)}"><span class="font-bold">Directed movies</span></span>
+            <a th:each="directed : ${artist.directedMovies}" th:text="${directed.title}" th:href="@{/movies/{id}(id=${directed.id})}" class="hover:underline"></a>
+            <span class="text-2xl" th:unless="${#lists.isEmpty(artist.starredMovies)}"><span class="font-bold">Starred movies</span></span>
+            <a th:each="starred : ${artist.starredMovies}" th:text="${starred.title}" th:href="@{/movies/{id}(id=${starred.id})}" class="hover:underline"></a>
+        </div>
+    </div>
+    <div sec:authorize="hasAuthority('ADMIN')" class="flex flex-row place-content-center space-x-4">
+        <a th:href="@{/admin/artists/{id}/update(id=${artist.id})}">
+            <button class="primary-action-button">Update info</button>
+        </a>
+        <form th:action="@{/admin/artists/{id}/delete(id=${artist.id})}" method="post">
+            <button class="primary-action-button">Delete movie</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

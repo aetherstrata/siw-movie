@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title> </title>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="|${project} - Update movie|">Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
-
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="flex flex-col place-content-center px-6 py-12 font-comfortaa">
+    <div class="flex flex-col text-gray-900 px-6 py-12 m-auto space-y-2">
+        <span class="text-3xl font-bold text-center">Update actors</span>
+        <span class="text-xl font-bold text-center">Current actors</span>
+        <div th:unless="${#lists.isEmpty(movie.actors)}" class="grid grid-cols-5 max-w-6xl gap-4 p-8 m-auto">
+            <div th:each="actor : ${movie.actors}" class="flex flex-col justify-center">
+                <a th:href="@{/artists/{id}(id=${actor.id})}">
+                    <span th:text="|${actor.name} ${actor.surname}|" class="hover:underline font-bold text-center block" ></span>
+                </a>
+                <form th:action="@{/admin/movies/{movieId}/removeActor/{directorId}(movieId=${movie.id},directorId=${actor.id})}" method="post" class="flex content-center">
+                    <input class="m-auto p-2 bg-slate-200 hover:bg-slate-900 hover:text-slate-100 rounded-xl" type="submit" value="Remove">
+                </form>
+            </div>
+        </div>
+        <span th:if="${#lists.isEmpty(movie.actors)}">N/A</span>
+    </div>
+    <div class="flex flex-col space-y-4">
+        <span class="text-2xl font-bold text-center">Available directors</span>
+        <div th:unless="${#lists.isEmpty(available)}" class="flex flex-col place-content-center">
+            <span th:text="|${#lists.size(available)} available artists|" class="text-slate-700 text-center"></span>
+            <div class="grid grid-cols-5 gap-4 p-8 m-auto max-w-6xl">
+                <div th:each="artist : ${available}" class="flex flex-col justify-center">
+                    <a th:href="@{/artists/{id}(id=${artist.id})}">
+                        <span th:text="|${artist.name} ${artist.surname}|" class="text-center font-bold block hover:underline"></span>
+                    </a>
+                    <form th:action="@{/admin/movies/{movieId}/addActor/{directorId}(movieId=${movie.id},directorId=${artist.id})}" method="post" class="flex content-center">
+                        <input class="m-auto p-2 bg-slate-200 hover:bg-slate-900 hover:text-slate-100 rounded-xl" type="submit" value="Add">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

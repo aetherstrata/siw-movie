@@ -7,19 +7,12 @@
 </head>
 <body class="bg-white">
 <div th:replace="~{fragments/header :: header}"></div>
-    <p>Paolo</p>
-    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Test</h1>
-
-    <div>
-        <a href="/movies">Elenco Film</a>
-    </div>
-
-    <div th:if="${isAuthenticated}">
-        <span th:text="${palle}"></span>
-        <span>Logout</span>
-    </div>
-    <div th:unless="${isAuthenticated}">
-        <span th:text="${palle}"></span>
-    </div>
+<div class="flex flex-col place-content-center space-y-12 h-screen w-screen font-comfortaa">
+    <img th:src="@{/favicon.ico}" alt="Project logo" class="w-128 h-128"/>
+    <span class="text-6xl text-center font-extrabold">SIW Movie</span>
+    <a th:href="@{/movies}" class="primary-action-button m-auto">
+        <span class="text-4xl text-center font-bold">Browse now</span>
+    </a>
+</div>
 </body>
 </html>

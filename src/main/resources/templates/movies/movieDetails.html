@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title th:text="|${project} - Movies|">Title</title>
+    <title th:text="|${project} - Movie|">Title</title>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -24,14 +24,14 @@
         <div class="flex flex-col place-content-center align-middle min-h-full max-w-lg">
             <span class="text-2xl mb-2"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></span>
             <span class="text-2xl font-bold" th:if="${movie.synopsis}">Synopsis</span>
-            <span class="text-2xl mb-2" th:if="${movie.synopsis}" th:text="${movie.synopsis}"></span>
+            <span class="mb-2" th:if="${movie.synopsis}" th:text="${movie.synopsis}"></span>
             <span class="text-2xl mb-2" th:if="${movie.director}"><span class="font-bold">Directed by</span>
                 <a th:href="|@{/artists/}${movie.director.id}|">
-                    <span class="hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
+                    <span class="text-xl hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
                 </a>
             </span>
             <span th:unless="${#lists.isEmpty(movie.actors)}" class="text-2xl font-bold">Actors</span>
-            <a th:each="actor : ${movie.actors}" th:text="actor" class="hover:underline"></a>
+            <a th:each="actor : ${movie.actors}" th:text="|${actor.name} ${actor.surname}|" th:href="@{/artists/{id}(id=${actor.id})}" class="text-xl hover:underline"></a>
             <span class="text-2xl"><span th:text="|Reviews (${pageInfo.totalElements()})|" class="font-bold"></span>
                 <a sec:authorize="isAuthenticated()" th:unless="${currentUserReview}" th:href="@{/movies/{id}/addReview(id=${movie.id})}">
                     <span class="hover:underline">Add review</span>
