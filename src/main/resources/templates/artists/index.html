@@ -10,7 +10,7 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
     <div class="flex flex-col">
-        <span class="text-4xl font-bold w-screen text-center">Artists</span>
+        <span class="text-4xl font-bold m-auto text-center">Artists</span>
     </div>
     <div th:if="${#lists.isEmpty(artists)}">
         <span>No artists to display</span>

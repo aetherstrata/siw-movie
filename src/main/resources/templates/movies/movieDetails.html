@@ -12,9 +12,9 @@
     <span class="text-4xl font-bold m-auto text-center" th:text="${movie.title}"></span>
     <div class="flex flex-row place-self-center w-256">
         <div>
-            <img th:if="${movie.imageUrl}" th:src="|/${movie.imageUrl}|" th:alt="|${movie.title} cover image|"
+            <img th:if="${movie.firstImage}" th:src="${movie.firstImage}" th:alt="|${movie.title} cover image|"
                  class="w-[440px] h-[660px] rounded-2xl"/>
-            <div th:unless="${movie.imageUrl}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
+            <div th:unless="${movie.firstImage}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
                 <span class="text-3xl m-auto">N/A</span>
             </div>
         </div>

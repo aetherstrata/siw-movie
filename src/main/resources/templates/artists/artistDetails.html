@@ -22,11 +22,21 @@
         <div class="w-[2px] h-[660px] rounded bg-slate-400"></div>
         <div class="w-4"></div>
         <div class="flex flex-col place-content-center align-middle min-h-full max-w-lg space-y-2">
-            <span class="text-2xl"><span class="font-bold">Date of birth </span><span th:text="${artist.dateOfBirth}"></span></span>
-            <span class="text-2xl" th:if="${artist.dateOfDeath}"><span class="font-bold">Date of death </span><span th:text="${artist.dateOfDeath}"></span></span>
-            <span class="text-2xl" th:unless="${#lists.isEmpty(artist.directedMovies)}"><span class="font-bold">Directed movies</span></span>
+            <span class="text-2xl">
+                <span class="font-bold">Date of birth </span>
+                <span th:text="${artist.dateOfBirth}"></span>
+            </span>
+            <span class="text-2xl" th:if="${artist.dateOfDeath}">
+                <span class="font-bold">Date of death </span>
+                <span th:text="${artist.dateOfDeath}"></span>
+            </span>
+            <span class="text-2xl" th:unless="${#lists.isEmpty(artist.directedMovies)}">
+                <span class="font-bold">Directed movies</span>
+            </span>
             <a th:each="directed : ${artist.directedMovies}" th:text="${directed.title}" th:href="@{/movies/{id}(id=${directed.id})}" class="hover:underline"></a>
-            <span class="text-2xl" th:unless="${#lists.isEmpty(artist.starredMovies)}"><span class="font-bold">Starred movies</span></span>
+                <span class="text-2xl" th:unless="${#lists.isEmpty(artist.starredMovies)}">
+                    <span class="font-bold">Starred movies</span>
+                </span>
             <a th:each="starred : ${artist.starredMovies}" th:text="${starred.title}" th:href="@{/movies/{id}(id=${starred.id})}" class="hover:underline"></a>
         </div>
     </div>
