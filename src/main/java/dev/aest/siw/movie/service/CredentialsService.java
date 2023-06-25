@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -22,15 +23,6 @@ public class CredentialsService implements UserDetailsService
 {
     private final CredentialsRepository credentialsRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public boolean isOAuth(Authentication auth){
-        return auth instanceof OAuth2AuthenticationToken;
-    }
-
-    public boolean isAdminUser(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth != null && auth.getAuthorities().stream().anyMatch(x -> x.getAuthority().equals(Credentials.ADMIN_AUTHORITY));
-    }
 
     @Transactional(readOnly = true)
     public Credentials getCredentials(UUID id) {

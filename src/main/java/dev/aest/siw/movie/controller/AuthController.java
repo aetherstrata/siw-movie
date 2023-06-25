@@ -25,6 +25,7 @@ public class AuthController
 {
     private final CredentialsService credentialsService;
     private final CredentialsValidator credentialsValidator;
+
     private final UserService userService;
     private final UserValidator userValidator;
 

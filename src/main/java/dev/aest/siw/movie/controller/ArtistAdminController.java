@@ -1,7 +1,6 @@
 package dev.aest.siw.movie.controller;
 
 import dev.aest.siw.movie.model.Artist;
-import dev.aest.siw.movie.repository.ArtistRepository;
 import dev.aest.siw.movie.service.ArtistFileService;
 import dev.aest.siw.movie.service.ArtistService;
 import jakarta.validation.Valid;
@@ -20,7 +19,6 @@ public class ArtistAdminController
 {
     private final ArtistFileService artistFileService;
     private final ArtistService artistService;
-    private final ArtistRepository artistRepository;
 
     @GetMapping("/admin/artists/new")
     public String addNewArtist(Model model){
@@ -80,7 +78,7 @@ public class ArtistAdminController
             @PathVariable("id") final Long id){
         Artist artist = artistService.getArtist(id);
         if (artist == null) return "artists/notFound";
-        artistRepository.delete(artist);
+        artistService.deleteArtist(artist);
         return "redirect:/artists";
     }
 }

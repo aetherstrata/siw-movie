@@ -4,10 +4,12 @@ import dev.aest.siw.movie.model.Artist;
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.ArtistRepository;
 
+import io.micrometer.common.KeyValues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,11 @@ public class ArtistService
     private static final int MAX_PAGE_SIZE = 50;
 
     private final ArtistRepository artistRepository;
+
+    @Transactional(readOnly = true)
+    public List<Artist> getAll() {
+        return this.artistRepository.findAll();
+    }
 
     @Transactional(readOnly = true)
     public List<Artist> getAllActors(){
@@ -46,15 +53,14 @@ public class ArtistService
         return getArtistsPage(page, MAX_PAGE_SIZE);
     }
 
-
-    @Transactional
-    public void saveArtist(Artist artist) {
-        artistRepository.save(artist);
-    }
-
     @Transactional(readOnly = true)
     public List<Artist> getAllActorsByMovie(Movie movie) {
         return this.artistRepository.findByStarredMoviesContains(movie);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Artist> getAvailableActorsFor(Movie movie){
+        return this.artistRepository.findByStarredMoviesNotContains(movie);
     }
 
     @Transactional(readOnly = true)
@@ -65,5 +71,15 @@ public class ArtistService
     @Transactional(readOnly = true)
     public Artist getFullArtist(Long id) {
         return this.artistRepository.findFullById(id).orElse(null);
+    }
+
+    @Transactional
+    public void saveArtist(Artist artist) {
+        artistRepository.save(artist);
+    }
+
+    @Transactional
+    public void deleteArtist(Artist artist){
+        artistRepository.delete(artist);
     }
 }

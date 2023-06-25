@@ -37,7 +37,6 @@ public class UserService
      * Retrieve the current {@link User} from the database.
      * @return the retrieved {@link User}, or null if no {@link User} is logged in
      */
-    @Transactional(readOnly = true)
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return switch (principal){
@@ -54,7 +53,7 @@ public class UserService
      * @throws DataIntegrityViolationException if a {@link User} with the same username
      *                              as the passed User already exists in the database
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public User saveUser(User user) {
         return this.userRepository.save(user);
     }

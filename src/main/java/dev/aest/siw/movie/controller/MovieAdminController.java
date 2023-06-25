@@ -2,7 +2,6 @@ package dev.aest.siw.movie.controller;
 
 import dev.aest.siw.movie.model.Artist;
 import dev.aest.siw.movie.model.Movie;
-import dev.aest.siw.movie.repository.ArtistRepository;
 import dev.aest.siw.movie.service.ArtistService;
 import dev.aest.siw.movie.service.MovieFileService;
 import dev.aest.siw.movie.service.MovieService;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Controller
@@ -28,7 +25,6 @@ public class MovieAdminController
     private final MovieFileService movieFileService;
     private final MovieValidator movieValidator;
 
-    private final ArtistRepository artistRepository;
     private final ArtistService artistService;
 
     @GetMapping("/admin/movies/new")
@@ -92,7 +88,7 @@ public class MovieAdminController
         Movie movie = movieService.getMovie(id);
         if (movie == null) return "movies/notFound";
         model.addAttribute("movie", movie);
-        model.addAttribute("artists", artistRepository.findAll().stream().filter(a -> !Objects.equals(a, movie.getDirector())).toList());
+        model.addAttribute("artists", artistService.getAll().stream().filter(a -> !a.equals(movie.getDirector())).toList());
         return "/admin/manageMovieDirector";
     }
 
@@ -125,9 +121,8 @@ public class MovieAdminController
             Model model) {
         Movie movie = movieService.getDetailedMovie(id);
         if (movie == null) return "movies/notFound";
-        List<Artist> availableArtists = artistRepository.findByStarredMoviesNotContains(movie);
         model.addAttribute("movie", movie);
-        model.addAttribute("available", availableArtists);
+        model.addAttribute("available", artistService.getAvailableActorsFor(movie));
         return "/admin/manageMovieActors";
     }
 
