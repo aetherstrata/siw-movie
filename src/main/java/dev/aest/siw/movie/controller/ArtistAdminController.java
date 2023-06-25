@@ -1,7 +1,6 @@
 package dev.aest.siw.movie.controller;
 
 import dev.aest.siw.movie.model.Artist;
-import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.ArtistRepository;
 import dev.aest.siw.movie.service.ArtistFileService;
 import dev.aest.siw.movie.service.ArtistService;
@@ -35,7 +34,7 @@ public class ArtistAdminController
             BindingResult movieBinding,
             @RequestParam("image") MultipartFile image){
         if (artist != null && !movieBinding.hasErrors()){
-            if (image != null && !image.isEmpty()) artist.setImageUrl(artistFileService.save(image).toString());
+            if (image != null && !image.isEmpty()) artist.setImageUrl(artistFileService.save(image));
             artistService.saveArtist(artist);
             return "redirect:/artists";
         }
@@ -66,7 +65,7 @@ public class ArtistAdminController
                 File oldFile = new File(dbArtist.getImageUrl());
                 if (oldFile.exists()) oldFile.delete();
             }
-            dbArtist.setImageUrl(artistFileService.save(image).toString());
+            dbArtist.setImageUrl(artistFileService.save(image));
         }
         dbArtist.setName(artist.getName());
         dbArtist.setSurname(artist.getSurname());
