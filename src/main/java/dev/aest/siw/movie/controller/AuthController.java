@@ -45,7 +45,6 @@ public class AuthController
         this.userValidator.validate(user, userBinding);
         this.credentialsValidator.validate(credentials, credentialsBinding);
         if(!userBinding.hasErrors() && !credentialsBinding.hasErrors()) {
-            user.setNickname(credentials.getUsername());
             credentials.setUser(user);
             userService.saveUser(user);
             credentialsService.saveCredentials(credentials);

@@ -39,7 +39,7 @@ public class MovieController
         return "movies/index";
     }
 
-    @PostMapping("/movies/search")
+    @PostMapping("/search/movies")
     public String searchMovies(
             @RequestParam("year") int year,
             Pageable pageable,
@@ -61,7 +61,7 @@ public class MovieController
             return "movies/notFound";
         }
         Page<Review> reviewPage = reviewService.getReviewPage(movie, pageable);
-        Review currentUserReview = reviewService.getUserReview(userService.getCurrentUser(principal), movie);
+        Review currentUserReview = reviewService.getUserReview(userService.getCurrentUser(), movie);
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviewPage.stream().toList());
         model.addAttribute("currentUserReview", currentUserReview);
@@ -91,7 +91,7 @@ public class MovieController
             Principal principal,
             Model model){
         Movie movie = movieService.getMovie(id);
-        User user = userService.getCurrentUser(principal);
+        User user = userService.getCurrentUser();
         this.reviewValidator.validate(review, reviewBinding);
         if (movie == null || user == null || reviewBinding.hasErrors()) {
             return "movies/formAddReview";

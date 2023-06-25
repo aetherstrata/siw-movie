@@ -57,7 +57,13 @@ public class ArtistService
         return this.artistRepository.findByStarredMoviesContains(movie);
     }
 
+    @Transactional(readOnly = true)
     public Artist getArtist(Long id) {
         return this.artistRepository.findById(id).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Artist getFullArtist(Long id) {
+        return this.artistRepository.findFullById(id).orElse(null);
     }
 }

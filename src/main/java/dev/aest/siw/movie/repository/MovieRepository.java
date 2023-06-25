@@ -3,13 +3,14 @@ package dev.aest.siw.movie.repository;
 import dev.aest.siw.movie.model.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface MovieRepository extends JpaRepository<Movie, Long>
+public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>, CrudRepository<Movie, Long>
 {
     List<Movie> findByTitle(String title);
     Page<Movie> findByTitle(String title, Pageable pageable);

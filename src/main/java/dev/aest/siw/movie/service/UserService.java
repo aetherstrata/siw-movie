@@ -1,16 +1,16 @@
 package dev.aest.siw.movie.service;
 
 import dev.aest.siw.movie.auth.OAuth2Credentials;
+import dev.aest.siw.movie.model.Credentials;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +38,13 @@ public class UserService
      * @return the retrieved {@link User}, or null if no {@link User} is logged in
      */
     @Transactional(readOnly = true)
-    public User getCurrentUser(Principal principal) {
-        return principal == null
-                ? null
-                : principal instanceof OAuth2AuthenticationToken
-                    ? ((OAuth2Credentials)((OAuth2AuthenticationToken)principal).getPrincipal()).getUser()
-                    : this.userRepository.findByUsername(principal.getName()).orElse(null);
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return switch (principal){
+            case Credentials local -> local.getUser();
+            case OAuth2Credentials oauth -> oauth.getUser();
+            default -> null;
+        };
     }
 
 
