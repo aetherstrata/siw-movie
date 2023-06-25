@@ -769,12 +769,13 @@ select{
   margin-right: 1rem;
 }
 
-.mb-2{
-  margin-bottom: 0.5rem;
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.mb-8{
-  margin-bottom: 2rem;
+.mb-2{
+  margin-bottom: 0.5rem;
 }
 
 .mt-2{
@@ -805,12 +806,12 @@ select{
   display: grid;
 }
 
-.h-128{
-  height: 32rem;
-}
-
 .h-80{
   height: 20rem;
+}
+
+.h-96{
+  height: 24rem;
 }
 
 .h-\[2px\]{
@@ -1123,6 +1124,11 @@ select{
 .py-12{
   padding-top: 3rem;
   padding-bottom: 3rem;
+}
+
+.py-24{
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 .py-8{

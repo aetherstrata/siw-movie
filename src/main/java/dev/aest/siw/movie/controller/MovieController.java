@@ -4,7 +4,6 @@ import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.model.PageInfo;
 import dev.aest.siw.movie.model.Review;
 import dev.aest.siw.movie.model.User;
-import dev.aest.siw.movie.service.ArtistService;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.service.ReviewService;
 import dev.aest.siw.movie.service.UserService;

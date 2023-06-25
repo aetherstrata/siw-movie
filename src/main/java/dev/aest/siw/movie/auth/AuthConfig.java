@@ -3,7 +3,6 @@ package dev.aest.siw.movie.auth;
 import dev.aest.siw.movie.model.User;
 import dev.aest.siw.movie.repository.UserRepository;
 import dev.aest.siw.movie.service.CredentialsService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +23,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
