@@ -13,8 +13,4 @@ public interface IFileService
     Path save(MultipartFile file);
 
     Resource load(String filename);
-
-    void deleteAll();
-
-    Stream<Path> loadAll();
 }
