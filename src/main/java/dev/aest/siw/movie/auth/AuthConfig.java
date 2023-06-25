@@ -66,11 +66,11 @@ public class AuthConfig
                 .formLogin(login -> login
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/success")
+                        .defaultSuccessUrl("/success", true)
                         .permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
-                        .defaultSuccessUrl("/oauth2-success")
+                        .defaultSuccessUrl("/oauth2-success", true)
                         .userInfoEndpoint().userService(oauth2UserService()))
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
