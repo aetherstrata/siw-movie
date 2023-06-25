@@ -805,6 +805,10 @@ select{
   display: grid;
 }
 
+.h-128{
+  height: 32rem;
+}
+
 .h-80{
   height: 20rem;
 }
@@ -832,6 +836,10 @@ select{
 
 .h-full{
   height: 100%;
+}
+
+.h-screen{
+  height: 100vh;
 }
 
 .min-h-full{
@@ -899,6 +907,10 @@ select{
   max-width: 56rem;
 }
 
+.max-w-6xl{
+  max-width: 72rem;
+}
+
 .max-w-lg{
   max-width: 32rem;
 }
@@ -913,6 +925,10 @@ select{
 
 .grid-cols-4{
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5{
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -1153,6 +1169,11 @@ select{
   line-height: 2.5rem;
 }
 
+.text-6xl{
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
 .text-lg{
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -1167,8 +1188,8 @@ select{
   font-weight: 700;
 }
 
-.tracking-tight{
-  letter-spacing: -0.025em;
+.font-extrabold{
+  font-weight: 800;
 }
 
 .text-gray-700{
@@ -1223,11 +1244,4 @@ select{
 
 .hover\:underline:hover{
   text-decoration-line: underline;
-}
-
-@media (min-width: 640px){
-  .sm\:text-6xl{
-    font-size: 3.75rem;
-    line-height: 1;
-  }
 }
