@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -78,5 +79,10 @@ public class ReviewService
     @Transactional
     public void saveReview(Review review) {
         reviewRepository.save(review);
+    }
+
+    @Transactional
+    public List<Review> getReviewsForMovie(Long id) {
+        return this.reviewRepository.findAllByMovieId(id);
     }
 }

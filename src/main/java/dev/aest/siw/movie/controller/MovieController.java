@@ -38,17 +38,6 @@ public class MovieController
         return "movies/index";
     }
 
-    @PostMapping("/search/movies")
-    public String searchMovies(
-            @RequestParam("year") int year,
-            Pageable pageable,
-            Model model){
-        Page<Movie> moviePage = movieService.getMoviesByYearPage(year, pageable);
-        model.addAttribute("movies", moviePage.stream().toList());
-        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo<>(moviePage));
-        return "movies/searchResults";
-    }
-
     @GetMapping("/movies/{id}")
     public String movieDetails(
             @PathVariable long id,

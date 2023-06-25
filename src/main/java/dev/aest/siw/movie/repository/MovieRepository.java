@@ -12,17 +12,22 @@ import java.util.Optional;
 
 public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>, CrudRepository<Movie, Long>
 {
-    List<Movie> findByTitle(String title);
-    Page<Movie> findByTitle(String title, Pageable pageable);
+    List<Movie> findAllByDirectorId(long id);
 
-    List<Movie> findByYear(int year);
-    Page<Movie> findByYear(int year, Pageable pageable);
+    @Query(value = "SELECT m.*, (SELECT i.image FROM movie_images i WHERE i.movie_id=m.id ORDER BY i.image LIMIT 1) AS firstImage FROM movies m WHERE m.id IN (SELECT a.movie_id FROM movie_actors a WHERE a.actor_id=:id)", nativeQuery = true)
+    List<Movie> findAllByActorId(long id);
+
+    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors LEFT JOIN FETCH m.imageUrls")
+    List<Movie> findAllFull();
+
+    @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors LEFT JOIN FETCH m.imageUrls WHERE m.id=:id")
+    Optional<Movie> findFullMovieById(long id);
 
     @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.actors WHERE m.id=:id")
-    Optional<Movie> getDetailedById(long id);
+    Optional<Movie> findDetailedById(long id);
 
     @Query("SELECT m FROM Movie m LEFT JOIN FETCH m.imageUrls WHERE m.id=:id")
-    Optional<Movie> getWithImagesById(long id);
+    Optional<Movie> findWithImagesById(long id);
 
     boolean existsByTitleAndYear(String title, int year);
 }

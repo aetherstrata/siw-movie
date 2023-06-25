@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface ReviewRepository extends PagingAndSortingRepository<Review, Long>, CrudRepository<Review, Long>
 {
+    List<Review> findAllByMovieId(Long id);
     List<Review> findAllByMovie(Movie movie);
     Page<Review> findAllByMovie(Movie movie, Pageable pageable);
 
