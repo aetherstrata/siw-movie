@@ -3,7 +3,6 @@ package dev.aest.siw.movie.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,8 +11,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public abstract class FileService implements IFileService
@@ -30,11 +27,11 @@ public abstract class FileService implements IFileService
     }
 
     @Override
-    public Path save(MultipartFile file) {
-        Path filepath = this.root.resolve(UUID.randomUUID() + "-" + file.getOriginalFilename());
+    public String save(MultipartFile file) {
+        Path filepath = this.root.resolve(System.currentTimeMillis() + "-" + file.getOriginalFilename());
         try {
             Files.copy(file.getInputStream(), filepath);
-            return Paths.get("").relativize(filepath);
+            return filepath.toString().substring(1);
         } catch (FileAlreadyExistsException e) {
             throw new RuntimeException("A file of that name already exists. => " + filepath);
         } catch (Exception e) {
