@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -41,10 +41,13 @@ public class MovieAdminController
     public String addNewMovie(
             @Valid @ModelAttribute("movie") Movie movie,
             BindingResult movieBinding,
-            @RequestParam("image") MultipartFile image){
+            @RequestParam("image") MultipartFile[] images){
         this.movieValidator.validate(movie, movieBinding);
         if (!movieBinding.hasErrors()){
-            if (image != null && !image.isEmpty()) movie.setImageUrl(movieFileService.save(image).toString());
+            Arrays.stream(images).forEach(image -> {
+                if (image != null && !image.isEmpty())
+                    movie.getImageUrls().add(movieFileService.save(image));
+            });
             movieService.saveMovie(movie);
             return "redirect:/movies";
         }
@@ -66,17 +69,15 @@ public class MovieAdminController
             @PathVariable("id") final Long id,
             @Valid @ModelAttribute("movie") Movie movie,
             BindingResult movieBinding,
-            @RequestParam("image") MultipartFile image){
-        Movie dbMovie = movieService.getMovie(id);
+            @RequestParam("image") MultipartFile[] images){
+        Movie dbMovie = movieService.getMovieWithImages(id);
         if (dbMovie == null || !dbMovie.getId().equals(movie.getId())) return "movies/notFound";
         if (movieBinding.hasErrors()) return "admin/updateMovie";
-        if (image != null && !image.isEmpty()){
-            if (dbMovie.getImageUrl() != null){
-                File oldFile = new File(dbMovie.getImageUrl());
-                if (oldFile.exists()) oldFile.delete();
+        Arrays.stream(images).forEach(image -> {
+            if (image != null && !image.isEmpty()){
+                dbMovie.getImageUrls().add(movieFileService.save(image));
             }
-            dbMovie.setImageUrl(movieFileService.save(image).toString());
-        }
+        });
         dbMovie.setTitle(movie.getTitle());
         dbMovie.setSynopsis(movie.getSynopsis());
         dbMovie.setYear(movie.getYear());

@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,9 +35,13 @@ public final class Movie
     @Column(length = 1023)
     private String synopsis;
 
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "movie_images", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "image")
+    private List<String> imageUrls = new ArrayList<>();
 
-    private LocalDateTime createdAt;
+    @Formula("(SELECT i.image FROM movie_images i WHERE i.movie_id=id ORDER BY i.image LIMIT 1)")
+    private String firstImage;
 
     @ManyToOne
     @JoinColumn(name = "director_id")
@@ -51,6 +57,8 @@ public final class Movie
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void onPersist(){
