@@ -774,6 +774,11 @@ select{
   margin-right: auto;
 }
 
+.my-24{
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+}
+
 .mb-2{
   margin-bottom: 0.5rem;
 }
@@ -1124,11 +1129,6 @@ select{
 .py-12{
   padding-top: 3rem;
   padding-bottom: 3rem;
-}
-
-.py-24{
-  padding-top: 6rem;
-  padding-bottom: 6rem;
 }
 
 .py-8{
