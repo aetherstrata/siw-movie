@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -39,11 +38,9 @@ public class UserService
      */
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return switch (principal){
-            case Credentials local -> local.getUser();
-            case OAuth2Credentials oauth -> oauth.getUser();
-            default -> null;
-        };
+        if (principal instanceof Credentials local) return local.getUser();
+        else if (principal instanceof OAuth2Credentials oauth) return oauth.getUser();
+        else return null;
     }
 
 
