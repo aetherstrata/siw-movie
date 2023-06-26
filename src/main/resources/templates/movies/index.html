@@ -8,17 +8,15 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
+<div class="flex flex-col w-screen place-content-center antialiased text-gray-900 py-12 space-y-12 font-comfortaa">
     <div class="flex flex-col">
-        <span class="text-4xl font-bold m-auto text-center">Movies</span>
-    </div>
-    <div th:if="${#lists.isEmpty(movies)}">
-        <span>No movies to display</span>
+        <span class="text-4xl font-bold m-auto">Movies</span>
+        <span th:if="${#lists.isEmpty(movies)}" class="text-slate-700 m-auto">No movies to display</span>
+        <span th:unless="${#lists.isEmpty(movies)}" class="text-slate-700 m-auto" th:text="|${pageInfo.totalElements} movies in the database|"></span>
     </div>
     <div class="flex flex-col" th:unless="${#lists.isEmpty(movies)}">
-        <span class="text-slate-700" th:text="|${pageInfo.totalElements} movies in the database|"></span>
-        <div class="flex flex-wrap space-x-5 p-8">
-            <div class="flex flex-col justify-center" th:each="movie : ${movies}">
+        <div class="grid grid-cols-5 gap-y-4 p-8">
+            <div class="w-[220px]" th:each="movie : ${movies}">
                 <div th:if="${movie.firstImage}">
                     <a th:href="|@{/movies/}${movie.id}|">
                         <img class="w-[220px] h-[330px] rounded-2xl" th:src="${movie.firstImage}"
