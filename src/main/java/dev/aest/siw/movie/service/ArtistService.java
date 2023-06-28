@@ -3,13 +3,11 @@ package dev.aest.siw.movie.service;
 import dev.aest.siw.movie.model.Artist;
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.ArtistRepository;
-
-import io.micrometer.common.KeyValues;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +68,11 @@ public class ArtistService
 
     @Transactional(readOnly = true)
     public Artist getFullArtist(Long id) {
-        return this.artistRepository.findFullById(id).orElse(null);
+        Artist artist = this.artistRepository.findById(id).orElse(null);
+        if (artist == null) return null;
+        Hibernate.initialize(artist.getStarredMovies());
+        Hibernate.initialize(artist.getDirectedMovies());
+        return artist;
     }
 
     @Transactional

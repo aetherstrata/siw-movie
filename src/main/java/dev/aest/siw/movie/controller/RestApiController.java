@@ -1,9 +1,7 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.dto.ArtistAndRelatedMoviesDto;
-import dev.aest.siw.movie.dto.ArtistDto;
-import dev.aest.siw.movie.dto.DetailedMovieDto;
-import dev.aest.siw.movie.dto.DetailedMovieWithReviewsDto;
+import dev.aest.siw.movie.dto.*;
+import dev.aest.siw.movie.model.Artist;
 import dev.aest.siw.movie.service.ArtistService;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.service.ReviewService;
@@ -25,8 +23,8 @@ public class RestApiController
     private final ArtistService artistService;
 
     @GetMapping("movies")
-    public List<DetailedMovieDto> getAllMovies(){
-        return movieService.getAllFullMovies().stream().map(DetailedMovieDto::of).toList();
+    public List<MovieDto> getAllMovies(){
+        return movieService.getAllMovies().stream().map(MovieDto::of).toList();
     }
 
     @GetMapping("movie/{id}")
@@ -41,9 +39,10 @@ public class RestApiController
 
     @GetMapping("artist/{id}")
     public ArtistAndRelatedMoviesDto getArtist(@PathVariable("id") final Long id){
+        Artist artist = artistService.getFullArtist(id);
         return  ArtistAndRelatedMoviesDto.of(
-                artistService.getFullArtist(id),
-                movieService.getDirectedMoviesByArtistId(id),
-                movieService.getStarredMoviesByArtistId(id));
+                artist,
+                movieService.getDirectedMoviesByArtist(artist),
+                movieService.getStarredMoviesByArtist(artist));
     }
 }

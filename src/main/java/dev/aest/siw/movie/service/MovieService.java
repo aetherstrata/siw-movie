@@ -1,9 +1,10 @@
 package dev.aest.siw.movie.service;
 
+import dev.aest.siw.movie.model.Artist;
 import dev.aest.siw.movie.model.Movie;
 import dev.aest.siw.movie.repository.MovieRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +38,11 @@ public class MovieService
      */
     @Transactional(readOnly = true)
     public Movie getFullMovie(Long id){
-        return this.movieRepository.findFullMovieById(id).orElse(null);
+        Movie movie = this.movieRepository.findById(id).orElse(null);
+        if (movie == null) return null;
+        Hibernate.initialize(movie.getActors());
+        Hibernate.initialize(movie.getImageUrls());
+        return movie;
     }
 
     @Transactional(readOnly = true)
@@ -66,10 +70,6 @@ public class MovieService
         return getMoviesPage(page, MAX_PAGE_SIZE);
     }
 
-    @Transactional(readOnly = true)
-    public List<Movie> getAllFullMovies(){
-        return this.movieRepository.findAllFull();
-    }
 
     @Transactional
     public void saveMovie(Movie movie) {
@@ -82,12 +82,17 @@ public class MovieService
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getDirectedMoviesByArtistId(Long id) {
-        return this.movieRepository.findAllByDirectorId(id);
+    public List<Movie> getDirectedMoviesByArtist(Artist artist) {
+        return this.movieRepository.findAllByDirector(artist);
     }
 
     @Transactional(readOnly = true)
-    public List<Movie> getStarredMoviesByArtistId(Long id) {
-        return this.movieRepository.findAllByActorId(id);
+    public List<Movie> getStarredMoviesByArtist(Artist artist) {
+        return this.movieRepository.findAllByActorsContaining(artist);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Movie> getAllMovies() {
+        return this.movieRepository.findAll();
     }
 }
