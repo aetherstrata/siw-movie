@@ -108,6 +108,7 @@ public class AuthConfig
 
             // Register a new user
             User newUser = new User();
+            newUser.setNickname(username);
             newUser.setEmail(email);
             newUser.setName(name);
             userRepository.save(newUser);

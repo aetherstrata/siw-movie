@@ -18,13 +18,13 @@ public final class User
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank
+    @NotBlank(message = "Email must not be whitespace")
     @Email
     private String email;
 
-    private String name;
+    private String nickname;
 
-    private String surname;
+    private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
@@ -42,14 +42,14 @@ public final class User
 
         if (!email.equals(user.email)) return false;
         if (!name.equals(user.name)) return false;
-        return surname.equals(user.surname);
+        return nickname.equals(user.nickname);
     }
 
     @Override
     public int hashCode() {
         int result = email.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + surname.hashCode();
+        result = 31 * result + nickname.hashCode();
         return result;
     }
 }
