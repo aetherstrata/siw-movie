@@ -26,11 +26,11 @@ public class Credentials implements UserDetails
     private UUID id;
 
     @Column(unique = true)
-    @NotBlank
+    @NotBlank(message = "Username must not be whitespace")
     @Pattern(regexp = "^[A-Za-z0-9_.]+$", message = "Username must contain only alphanumerical characters, dots, dashes and underscores")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Password must not be whitespace")
     @Length(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
