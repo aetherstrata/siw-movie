@@ -15,7 +15,7 @@
         <span th:unless="${#lists.isEmpty(movies)}" class="text-slate-700 m-auto" th:text="|${pageInfo.totalElements} movies in the database|"></span>
     </div>
     <div class="flex flex-col" th:unless="${#lists.isEmpty(movies)}">
-        <div class="grid grid-cols-5 gap-y-4 p-8">
+        <div class="grid grid-cols-6 gap-4 p-8 m-auto">
             <div class="w-[220px]" th:each="movie : ${movies}">
                 <div th:if="${movie.firstImage}">
                     <a th:href="|@{/movies/}${movie.id}|">
