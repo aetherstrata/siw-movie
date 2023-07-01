@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Review;
+import dev.aest.siw.movie.entity.Review;
 import dev.aest.siw.movie.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

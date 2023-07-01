@@ -1,11 +1,10 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Credentials;
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.entity.Credentials;
+import dev.aest.siw.movie.model.RegistrationFormData;
 import dev.aest.siw.movie.service.CredentialsService;
-import dev.aest.siw.movie.service.UserService;
-import dev.aest.siw.movie.validation.CredentialsValidator;
-import dev.aest.siw.movie.validation.UserValidator;
+import dev.aest.siw.movie.validation.DuplicateUsernameValidator;
+import dev.aest.siw.movie.validation.DuplicateEmailValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,44 +15,32 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
 public class AuthController
 {
     private final CredentialsService credentialsService;
-    private final CredentialsValidator credentialsValidator;
 
-    private final UserService userService;
-    private final UserValidator userValidator;
+    private final DuplicateUsernameValidator duplicateUsernameValidator;
+    private final DuplicateEmailValidator duplicateEmailValidator;
 
     @GetMapping("/register")
     public String registerPage(Model model){
-        model.addAttribute("user", new User());
-        model.addAttribute("credentials", new Credentials());
+        model.addAttribute("form", new RegistrationFormData());
         return "auth/formRegister";
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @Valid @ModelAttribute("user") final User user,
-            BindingResult userBinding,
-            @Valid @ModelAttribute("credentials") final Credentials credentials,
-            BindingResult credentialsBinding,
+            @Valid @ModelAttribute("form") final RegistrationFormData formData,
+            BindingResult bindingResult,
             Model model) {
-        this.userValidator.validate(user, userBinding);
-        this.credentialsValidator.validate(credentials, credentialsBinding);
-        if(!userBinding.hasErrors() && !credentialsBinding.hasErrors()) {
-            user.setNickname(credentials.getUsername());
-            credentials.setUser(user);
-            userService.saveUser(user);
-            credentialsService.saveCredentials(credentials);
-            model.addAttribute("user", user);
-            return "auth/successfulRegister";
-        }
-        return "auth/formRegister";
+        this.duplicateEmailValidator.validate(formData, bindingResult);
+        this.duplicateUsernameValidator.validate(formData, bindingResult);
+        if (bindingResult.hasErrors()) return "auth/formRegister";
+        Credentials credentials = credentialsService.registerNewUser(formData);
+        model.addAttribute("credentials", credentials);
+        return "auth/successfulRegister";
     }
 
     @GetMapping("/login")

@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.validation;
 
-import dev.aest.siw.movie.model.Credentials;
+import dev.aest.siw.movie.model.RegistrationFormData;
 import dev.aest.siw.movie.repository.CredentialsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,21 +9,21 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class CredentialsValidator implements Validator
+public class DuplicateUsernameValidator implements Validator
 {
     private final CredentialsRepository repository;
 
     @Override
     public boolean supports(Class<?> type) {
-        return Credentials.class.equals(type);
+        return RegistrationFormData.class.equals(type);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        var credentials = (Credentials)target;
+        var formData = (RegistrationFormData)target;
 
-        if (repository.findByUsername(credentials.getUsername()).isPresent()){
-            errors.reject("username.duplicate", "This username has already been taken.");
+        if (repository.findByUsername(formData.getUsername()).isPresent()){
+            errors.reject("username.duplicate");
         }
     }
 }

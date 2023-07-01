@@ -18,18 +18,18 @@ public class FileController
     private final ArtistFileService artistFileService;
 
     @GetMapping("/uploads/movies/images/{filename:.+}")
-    public ResponseEntity<Resource> getMovieCover(@PathVariable String filename) {
+    public ResponseEntity<Resource> getMovieCover(@PathVariable("filename") String filename) {
         Resource file = movieFileService.load(filename);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"%s\"".formatted(file.getFilename()))
                 .body(file);
     }
 
     @GetMapping("/uploads/artists/images/{filename:.+}")
-    public ResponseEntity<Resource> getArtistCover(@PathVariable String filename) {
+    public ResponseEntity<Resource> getArtistCover(@PathVariable("filename") String filename) {
         Resource file = artistFileService.load(filename);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"%s\"".formatted(file.getFilename()))
                 .body(file);
     }
 }

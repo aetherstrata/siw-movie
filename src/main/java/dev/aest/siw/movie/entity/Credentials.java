@@ -1,11 +1,11 @@
-package dev.aest.siw.movie.model;
+package dev.aest.siw.movie.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.AuthenticatedPrincipal;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Credentials implements UserDetails
 {
@@ -25,13 +26,15 @@ public class Credentials implements UserDetails
     @GeneratedValue
     private UUID id;
 
-    @Column(unique = true)
-    @NotBlank(message = "Username must not be whitespace")
-    @Pattern(regexp = "^[A-Za-z0-9_.]+$", message = "Username must contain only alphanumerical characters, dots, dashes and underscores")
+    @NaturalId
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "{username.blank}")
+    @Pattern(regexp = "^[A-Za-z0-9_.]+$", message = "{username.invalid}")
     private String username;
 
-    @NotBlank(message = "Password must not be whitespace")
-    @Length(min = 8, message = "Password must be at least 8 characters long")
+    @Column(nullable = false)
+    @NotBlank(message = "{password.blank}")
+    @Pattern(regexp = "^(?=(.*[A-Z])+)(?=(.*[a-z])+)(?=(.*[0-9])+)(?=(.*[!@#$%^&*()_+=.])+).{10,}$", message = "{password.weak}")
     private String password;
 
     private String authority;
@@ -39,7 +42,7 @@ public class Credentials implements UserDetails
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @OneToOne(cascade = {CascadeType.REMOVE})
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     @Override
@@ -70,11 +73,9 @@ public class Credentials implements UserDetails
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Credentials other)) return false;
 
-        Credentials that = (Credentials) o;
-
-        return username.equals(that.username);
+        return username.equals(other.username);
     }
 
     @Override

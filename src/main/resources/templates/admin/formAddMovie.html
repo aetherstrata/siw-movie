@@ -17,36 +17,36 @@
           <label class="block">
             <span class="form-input-title">Title</span>
             <input
-                    th:field="${movie.title}"
+                    th:field="${form.title}"
                     required
                     placeholder=""
                     type="text"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('movie.title')}" th:errors="${movie.title}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.title')}" th:errors="${form.title}"></div>
           <label class="block">
             <span class="form-input-title">Year</span>
             <input
-                    th:field="${movie.year}"
+                    th:field="${form.year}"
                     required
                     placeholder=""
                     type="number"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('movie.year')}" th:errors="${movie.year}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.year')}" th:errors="${form.year}"></div>
           <label class="block">
             <span class="form-input-title">Synopsis</span>
             <textarea
-                    th:field="${movie.synopsis}"
+                    th:field="${form.synopsis}"
                     placeholder="Insert a synopsis..."
                     rows="5"
                     class="form-input-field"
             >
             </textarea>
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('movie.synopsis')}" th:errors="${movie.synopsis}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.synopsis')}" th:errors="${form.synopsis}"></div>
           <label class="block">
             <span class="form-input-title">Image</span>
             <input
@@ -68,7 +68,7 @@
             </label>
           </div>
         </form>
-        <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('movie')}" th:text="${err}"></div>
+        <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('form')}" th:text="${err}"></div>
       </div>
     </div>
   </div>

@@ -1,11 +1,12 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Artist;
-import dev.aest.siw.movie.model.Movie;
+import dev.aest.siw.movie.entity.Artist;
+import dev.aest.siw.movie.entity.Movie;
+import dev.aest.siw.movie.model.MovieFormData;
 import dev.aest.siw.movie.service.ArtistService;
 import dev.aest.siw.movie.service.MovieFileService;
 import dev.aest.siw.movie.service.MovieService;
-import dev.aest.siw.movie.validation.MovieValidator;
+import dev.aest.siw.movie.validation.MovieFormValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.Set;
 
 @Controller
@@ -23,31 +23,27 @@ public class MovieAdminController
 {
     private final MovieService movieService;
     private final MovieFileService movieFileService;
-    private final MovieValidator movieValidator;
+    private final MovieFormValidator movieFormValidator;
 
     private final ArtistService artistService;
 
     @GetMapping("/admin/movies/new")
     public String addNewMovie(Model model){
-        model.addAttribute("movie", new Movie());
+        model.addAttribute("form", new MovieFormData());
         return "admin/formAddMovie";
     }
 
     @PostMapping("/admin/movies/new")
     public String addNewMovie(
-            @Valid @ModelAttribute("movie") Movie movie,
-            BindingResult movieBinding,
+            @Valid @ModelAttribute("form") MovieFormData formData,
+            BindingResult bindingResult,
             @RequestParam("image") MultipartFile[] images){
-        this.movieValidator.validate(movie, movieBinding);
-        if (!movieBinding.hasErrors()){
-            Arrays.stream(images).forEach(image -> {
-                if (image != null && !image.isEmpty())
-                    movie.getImageUrls().add(movieFileService.save(image));
-            });
-            movieService.saveMovie(movie);
-            return "redirect:/movies";
-        }
-        return "admin/formAddMovie";
+        this.movieFormValidator.validate(formData, bindingResult);
+        if (bindingResult.hasErrors()) return "admin/formAddMovie";
+        Movie movie = formData.toMovie();
+        movieService.addImages(movie, images);
+        movieService.saveMovie(movie);
+        return "redirect:/movies";
     }
 
     @GetMapping("/admin/movies/{id}/update")
@@ -55,29 +51,23 @@ public class MovieAdminController
             @PathVariable("id") final Long id,
             Model model) {
         Movie movie = movieService.getMovie(id);
-        if (movie == null) return "movies/notFound";
-        model.addAttribute("movie", movie);
+        if (movie == null) return MovieController.NOT_FOUND;
+        model.addAttribute("movie_id", movie.getId());
+        model.addAttribute("form", MovieFormData.of(movie));
         return "admin/updateMovie";
     }
 
     @PostMapping("/admin/movies/{id}/update")
     public String performMovieUpdate(
             @PathVariable("id") final Long id,
-            @Valid @ModelAttribute("movie") Movie movie,
-            BindingResult movieBinding,
+            @Valid @ModelAttribute("form") MovieFormData formData,
+            BindingResult bindingResult,
             @RequestParam("image") MultipartFile[] images){
-        Movie dbMovie = movieService.getMovieWithImages(id);
-        if (dbMovie == null || !dbMovie.getId().equals(movie.getId())) return "movies/notFound";
-        if (movieBinding.hasErrors()) return "admin/updateMovie";
-        Arrays.stream(images).forEach(image -> {
-            if (image != null && !image.isEmpty()){
-                dbMovie.getImageUrls().add(movieFileService.save(image));
-            }
-        });
-        dbMovie.setTitle(movie.getTitle());
-        dbMovie.setSynopsis(movie.getSynopsis());
-        dbMovie.setYear(movie.getYear());
-        movieService.saveMovie(dbMovie);
+        Movie movie = movieService.getMovieWithImages(id);
+        if (movie == null) return MovieController.NOT_FOUND;
+        if (bindingResult.hasErrors()) return "admin/updateMovie";
+        movieService.addImages(movie, images);
+        movieService.updateMovie(movie, formData);
         return "redirect:/movies/%d".formatted(id);
     }
 
@@ -86,7 +76,7 @@ public class MovieAdminController
             @PathVariable("id") final Long id,
             Model model) {
         Movie movie = movieService.getMovie(id);
-        if (movie == null) return "movies/notFound";
+        if (movie == null) return MovieController.NOT_FOUND;
         model.addAttribute("movie", movie);
         model.addAttribute("artists", artistService.getAll().stream().filter(a -> !a.equals(movie.getDirector())).toList());
         return "/admin/manageMovieDirector";
@@ -97,9 +87,9 @@ public class MovieAdminController
             @PathVariable("movieId") final Long movieId,
             @PathVariable("directorId") final Long directorId) {
         Movie movie = movieService.getMovie(movieId);
+        if (movie == null) return MovieController.NOT_FOUND;
         Artist director = artistService.getArtist(directorId);
-        if (movie == null) return "movies/notFound";
-        if (director == null) return "artists/notFound";
+        if (director == null) return ArtistController.NOT_FOUND;
         movie.setDirector(director);
         this.movieService.saveMovie(movie);
         return "redirect:/admin/movies/%d/updateDirector".formatted(movieId);
@@ -109,7 +99,7 @@ public class MovieAdminController
     public String removeDirectorFromMovie(
             @PathVariable("movieId") final Long movieId) {
         Movie movie = movieService.getMovie(movieId);
-        if (movie == null) return "movies/notFound";
+        if (movie == null) return MovieController.NOT_FOUND;
         movie.setDirector(null);
         this.movieService.saveMovie(movie);
         return "redirect:/admin/movies/%d/updateDirector".formatted(movieId);
@@ -120,7 +110,7 @@ public class MovieAdminController
             @PathVariable("id") final Long id,
             Model model) {
         Movie movie = movieService.getDetailedMovie(id);
-        if (movie == null) return "movies/notFound";
+        if (movie == null) return MovieController.NOT_FOUND;
         model.addAttribute("movie", movie);
         model.addAttribute("available", artistService.getAvailableActorsFor(movie));
         return "/admin/manageMovieActors";
@@ -131,9 +121,9 @@ public class MovieAdminController
             @PathVariable("movieId") final Long movieId,
             @PathVariable("actorId") final Long actorId) {
         Movie movie = movieService.getDetailedMovie(movieId);
+        if (movie == null) return MovieController.NOT_FOUND;
         Artist actor = artistService.getArtist(actorId);
-        if (movie == null) return "movies/notFound";
-        if (actor == null) return "artists/notFound";
+        if (actor == null) return ArtistController.NOT_FOUND;
         Set<Artist> actors = movie.getActors();
         actors.add(actor);
         this.movieService.saveMovie(movie);
@@ -145,9 +135,9 @@ public class MovieAdminController
             @PathVariable("movieId") final Long movieId,
             @PathVariable("actorId") final Long actorId) {
         Movie movie = movieService.getDetailedMovie(movieId);
+        if (movie == null) return MovieController.NOT_FOUND;
         Artist actor = artistService.getArtist(actorId);
-        if (movie == null) return "movies/notFound";
-        if (actor == null) return "artists/notFound";
+        if (actor == null) return ArtistController.NOT_FOUND;
         Set<Artist> actors = movie.getActors();
         actors.remove(actor);
         this.movieService.saveMovie(movie);
@@ -158,7 +148,7 @@ public class MovieAdminController
     public String deleteMovie(
             @PathVariable("id") final Long id){
         Movie movie = movieService.getMovie(id);
-        if (movie == null) return "movies/notFound";
+        if (movie == null) return MovieController.NOT_FOUND;
         movieService.deleteMovie(movie);
         return "redirect:/movies";
     }

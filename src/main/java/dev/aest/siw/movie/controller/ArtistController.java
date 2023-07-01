@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Artist;
+import dev.aest.siw.movie.entity.Artist;
 import dev.aest.siw.movie.model.PageInfo;
 import dev.aest.siw.movie.service.ArtistService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class ArtistController
 {
+    public static final String NOT_FOUND = "artists/notFound";
+
     private final ArtistService artistService;
 
     @GetMapping("/artists")
@@ -23,19 +25,16 @@ public class ArtistController
             Model model){
         Page<Artist> artistPage = artistService.getArtistsPage(pageable);
         model.addAttribute("artists", artistPage.stream().toList());
-        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo<>(artistPage));
+        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo(artistPage));
         return "artists/index";
     }
 
     @GetMapping("/artists/{id}")
     public String artistDetails(
             @PathVariable("id") final Long id,
-            Model model
-    ){
+            Model model){
         Artist artist = artistService.getFullArtist(id);
-        if (artist == null){
-            return "artists/notFound";
-        }
+        if (artist == null) return NOT_FOUND;
         model.addAttribute("artist", artist);
         return "artists/artistDetails";
     }

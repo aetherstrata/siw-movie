@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.dto;
 
-import dev.aest.siw.movie.model.Review;
+import dev.aest.siw.movie.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

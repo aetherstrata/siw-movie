@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.repository;
 
-import dev.aest.siw.movie.model.Credentials;
+import dev.aest.siw.movie.entity.Credentials;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.validation;
 
-import dev.aest.siw.movie.model.Movie;
+import dev.aest.siw.movie.model.MovieFormData;
 import dev.aest.siw.movie.repository.MovieRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -10,20 +10,20 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class MovieValidator implements Validator
+public class MovieFormValidator implements Validator
 {
     private final MovieRepository movieRepository;
 
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return Movie.class.equals(type);
+        return MovieFormData.class.equals(type);
     }
 
     @Override
     public void validate(@NotNull Object target, @NotNull Errors errors) {
-        var movie = (Movie)target;
+        var movie = (MovieFormData)target;
 
-        if (movie.getTitle() != null &&
+        if (movie.getTitle() != null && movie.getYear() != null &&
             movieRepository.existsByTitleAndYear(movie.getTitle(), movie.getYear())){
             errors.reject("movie.duplicate", "Another movie with these properties already exists");
         }

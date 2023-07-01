@@ -1,11 +1,12 @@
-package dev.aest.siw.movie.model;
+package dev.aest.siw.movie.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "movies", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
 public final class Movie
 {
@@ -68,12 +70,10 @@ public final class Movie
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Movie other)) return false;
 
-        Movie movie = (Movie) o;
-
-        if (!title.equals(movie.title)) return false;
-        return year.equals(movie.year);
+        if (!title.equals(other.title)) return false;
+        return year.equals(other.year);
     }
 
     @Override

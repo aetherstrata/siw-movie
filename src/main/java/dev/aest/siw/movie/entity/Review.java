@@ -1,15 +1,16 @@
-package dev.aest.siw.movie.model;
+package dev.aest.siw.movie.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = {"movie_id", "user_id"}))
 public final class Review
 {
@@ -25,26 +26,26 @@ public final class Review
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
+    @NotNull
+    @Min(value = 1, message = "{review.score.min}")
+    @Max(value = 5, message = "{review.score.max}")
+    private Integer score;
+
+    @Column(nullable = false, length = 127)
+    @NotBlank
+    @Size(max = 127, message = "{review.title.size}")
+    private String title;
+
+    @Column(nullable = false, length = 4095)
+    @NotBlank
+    private String text;
+
     @Setter(value = AccessLevel.PRIVATE)
     private LocalDateTime createdAt;
 
     @Setter(value = AccessLevel.PRIVATE)
     private LocalDateTime updatedAt;
-
-    @Column(nullable = false)
-    @NotNull
-    @Min(1)
-    @Max(5)
-    private Integer score;
-
-    @Column(nullable = false, length = 127)
-    @NotBlank
-    @Size(max = 127, message = "The review title must be shorter than 128 characters")
-    private String title;
-
-    @Column(nullable = false, length = 4095)
-    @Size(max = 4095, message = "The review must be shorter than 4096 characters")
-    private String text;
 
     @PrePersist
     public void onPersist(){
@@ -60,13 +61,11 @@ public final class Review
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Review other)) return false;
 
-        Review review = (Review) o;
-
-        if (!score.equals(review.score)) return false;
-        if (!title.equals(review.title)) return false;
-        return text.equals(review.text);
+        if (!score.equals(other.score)) return false;
+        if (!title.equals(other.title)) return false;
+        return text.equals(other.text);
     }
 
     @Override

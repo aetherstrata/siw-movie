@@ -692,7 +692,7 @@ select{
 
 .form-validation-error{
   margin-top: 0.25rem;
-  border-radius: 0.75rem;
+  border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(252 165 165 / var(--tw-bg-opacity));
   padding: 0.5rem;
@@ -781,10 +781,6 @@ select{
 
 .mb-2{
   margin-bottom: 0.5rem;
-}
-
-.mt-2{
-  margin-top: 0.5rem;
 }
 
 .mt-8{
@@ -993,10 +989,6 @@ select{
   gap: 1.5rem;
 }
 
-.gap-y-4{
-  row-gap: 1rem;
-}
-
 .space-x-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -1049,6 +1041,10 @@ select{
 
 .whitespace-nowrap{
   white-space: nowrap;
+}
+
+.whitespace-pre-line{
+  white-space: pre-line;
 }
 
 .rounded{

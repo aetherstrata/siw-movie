@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.auth;
 
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.entity.User;
 import dev.aest.siw.movie.repository.UserRepository;
 import dev.aest.siw.movie.service.CredentialsService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import static dev.aest.siw.movie.model.Credentials.ADMIN_AUTHORITY;
-import static dev.aest.siw.movie.model.Credentials.DEFAULT_AUTHORITY;
+import static dev.aest.siw.movie.entity.Credentials.ADMIN_AUTHORITY;
+import static dev.aest.siw.movie.entity.Credentials.DEFAULT_AUTHORITY;
 
 @Configuration
 @EnableWebSecurity
@@ -47,10 +47,6 @@ public class AuthConfig
 
     @Bean
     protected SecurityFilterChain configureHttpSecurity(final HttpSecurity httpSecurity) throws Exception {
-        // See https://stackoverflow.com/questions/75222930/spring-boot-3-0-2-adds-continue-query-parameter-to-request-url-after-login
-        // HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-        // requestCache.setMatchingRequestParameterName(null);
-
         httpSecurity
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
@@ -61,8 +57,6 @@ public class AuthConfig
                         .requestMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY)
                         .anyRequest().authenticated()
                 )
-                //.requestCache(cache -> cache
-                //        .requestCache(requestCache))
                 .formLogin(login -> login
                         .loginPage("/login")
                         .failureUrl("/login?error=true")

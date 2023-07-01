@@ -12,8 +12,8 @@
     <div class="flex flex-col justify-center m-auto py-8 px-4 space-y-8 rounded-xl bg-sky-100 max-w-xl">
         <span class="text-center text-4xl text-gray-700 font-bold">Congratulations</span>
         <span class="text-center text-3xl text-gray-700">Your account has been created</span>
-        <span class="text-center text-xl text-gray-700" th:text="${user.email}"></span>
-        <span class="text-center text-xl text-gray-700" th:text="|${user.name} ${user.surname}|"></span>
+        <span class="text-center text-xl text-gray-700" th:text="${credentials.username}"></span>
+        <span class="text-center text-xl text-gray-700" th:text="${credentials.user.email}"></span>
     </div>
 </div>
 </body>

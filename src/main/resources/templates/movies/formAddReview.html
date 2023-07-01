@@ -18,7 +18,7 @@
                         <label class="block w-5/6">
                             <span class="form-input-title">Title</span>
                             <input
-                                    th:field="${review.title}"
+                                    th:field="${form.title}"
                                     required
                                     placeholder=""
                                     type="text"
@@ -27,24 +27,24 @@
                         </label>
                         <label class="block w-1/6">
                             <span class="form-input-title">Score</span>
-                            <select th:field="${review.score}" class="form-input-field" required>
+                            <select th:field="${form.score}" class="form-input-field" required>
                                 <option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}"></option>
                             </select>
                         </label>
                     </div>
-                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.score')}" th:errors="${review.score}"></div>
-                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.title')}" th:errors="${review.title}"></div>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('form.score')}" th:errors="${form.score}"></div>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('form.title')}" th:errors="${form.title}"></div>
                     <label class="block">
                         <span class="form-input-title">Review</span>
                         <textarea
-                                th:field="${review.text}"
-                                placeholder="Write your review here..."
+                                th:field="${form.text}"
+                                placeholder="Write your form here..."
                                 rows="5"
                                 class="form-input-field"
                         >
                         </textarea>
                     </label>
-                    <div class="form-validation-error" th:if="${#fields.hasErrors('review.text')}" th:errors="${review.text}"></div>
+                    <div class="form-validation-error" th:if="${#fields.hasErrors('form.text')}" th:errors="${form.text}"></div>
                     <div class="flex justify-center">
                         <label class="inline-flex items-center mt-8">
                             <input
@@ -55,7 +55,7 @@
                         </label>
                     </div>
                 </form>
-                <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('review')}" th:text="${err}"></div>
+                <div class="form-validation-error mt-8" th:each="err : ${#fields.errors('form')}" th:text="${err}"></div>
             </div>
         </div>
     </div>

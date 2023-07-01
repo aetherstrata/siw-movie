@@ -1,7 +1,8 @@
 package dev.aest.siw.movie.service;
 
-import dev.aest.siw.movie.model.Artist;
-import dev.aest.siw.movie.model.Movie;
+import dev.aest.siw.movie.entity.Artist;
+import dev.aest.siw.movie.entity.Movie;
+import dev.aest.siw.movie.model.MovieFormData;
 import dev.aest.siw.movie.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,6 +23,7 @@ public class MovieService
     private static final int MAX_PAGE_SIZE = 50;
 
     private final MovieRepository movieRepository;
+    private final MovieFileService movieFileService;
 
     /**
      * Retrieve a {@link Movie} from the database based on its ID.
@@ -60,20 +64,17 @@ public class MovieService
         return movieRepository.findAll(pageable);
     }
 
-    @Transactional(readOnly = true)
-    public Page<Movie> getMoviesPage(int page, int size){
-        return getMoviesPage(PageRequest.of(page, Math.min(size, MAX_PAGE_SIZE)));
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Movie> getMoviesPage(int page){
-        return getMoviesPage(page, MAX_PAGE_SIZE);
-    }
-
-
     @Transactional
     public void saveMovie(Movie movie) {
         movieRepository.save(movie);
+    }
+
+    @Transactional
+    public void updateMovie(Movie movie, MovieFormData formData){
+        movie.setTitle(formData.getTitle());
+        movie.setSynopsis(formData.getSynopsis());
+        movie.setYear(formData.getYear());
+        this.movieRepository.save(movie);
     }
 
     @Transactional
@@ -94,5 +95,12 @@ public class MovieService
     @Transactional(readOnly = true)
     public List<Movie> getAllMovies() {
         return this.movieRepository.findAll();
+    }
+
+    public void addImages(Movie movie, MultipartFile... images){
+        Arrays.stream(images).forEach(image -> {
+            if (image != null && !image.isEmpty())
+                movie.getImageUrls().add(movieFileService.save(image));
+        });
     }
 }

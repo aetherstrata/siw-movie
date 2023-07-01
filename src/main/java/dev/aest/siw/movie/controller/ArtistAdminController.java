@@ -1,6 +1,7 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Artist;
+import dev.aest.siw.movie.entity.Artist;
+import dev.aest.siw.movie.model.ArtistFormData;
 import dev.aest.siw.movie.service.ArtistFileService;
 import dev.aest.siw.movie.service.ArtistService;
 import jakarta.validation.Valid;
@@ -22,21 +23,20 @@ public class ArtistAdminController
 
     @GetMapping("/admin/artists/new")
     public String addNewArtist(Model model){
-        model.addAttribute("artist", new Artist());
+        model.addAttribute("form", new ArtistFormData());
         return "admin/formAddArtist";
     }
 
     @PostMapping("/admin/artists/new")
     public String addNewArtist(
-            @Valid @ModelAttribute("artist") Artist artist,
-            BindingResult movieBinding,
+            @Valid @ModelAttribute("form") ArtistFormData formData,
+            BindingResult bindingResult,
             @RequestParam("image") MultipartFile image){
-        if (artist != null && !movieBinding.hasErrors()){
-            if (image != null && !image.isEmpty()) artist.setImageUrl(artistFileService.save(image));
-            artistService.saveArtist(artist);
-            return "redirect:/artists";
-        }
-        return "admin/formAddArtist";
+        if (bindingResult.hasErrors()) return "admin/formAddArtist";
+        Artist artist = formData.toArtist();
+        if (image != null && !image.isEmpty()) artist.setImageUrl(artistFileService.save(image));
+        artistService.saveArtist(artist);
+        return "redirect:/artists";
     }
 
     @GetMapping("/admin/artists/{id}/update")
@@ -44,32 +44,33 @@ public class ArtistAdminController
             @PathVariable("id") final Long id,
             Model model){
         Artist artist = artistService.getArtist(id);
-        if (artist == null) return "artists/notFound";
-        model.addAttribute("artist", artist);
+        if (artist == null) return ArtistController.NOT_FOUND;
+        model.addAttribute("artist_id", artist.getId());
+        model.addAttribute("form", ArtistFormData.of(artist));
         return "admin/updateArtist";
     }
 
     @PostMapping("/admin/artists/{id}/update")
     public String performArtistUpdate(
             @PathVariable("id") final Long id,
-            @Valid @ModelAttribute("artist") Artist artist,
-            BindingResult artistBinding,
+            @Valid @ModelAttribute("form") ArtistFormData formData,
+            BindingResult bindingResult,
             @RequestParam("image") MultipartFile image){
-        Artist dbArtist = artistService.getArtist(id);
-        if (dbArtist == null || !dbArtist.getId().equals(artist.getId())) return "artists/notFound";
-        if (artistBinding.hasErrors()) return "admin/updateArtist";
+        Artist artist = artistService.getArtist(id);
+        if (artist == null) return ArtistController.NOT_FOUND;
+        if (bindingResult.hasErrors()) return "admin/updateArtist";
         if (image != null && !image.isEmpty()){
-            if (dbArtist.getImageUrl() != null){
-                File oldFile = new File(dbArtist.getImageUrl());
+            if (artist.getImageUrl() != null){
+                File oldFile = new File("." + artist.getImageUrl());
                 if (oldFile.exists()) oldFile.delete();
             }
-            dbArtist.setImageUrl(artistFileService.save(image));
+            artist.setImageUrl(artistFileService.save(image));
         }
-        dbArtist.setName(artist.getName());
-        dbArtist.setSurname(artist.getSurname());
-        dbArtist.setDateOfBirth(artist.getDateOfBirth());
-        dbArtist.setDateOfDeath(artist.getDateOfDeath());
-        artistService.saveArtist(dbArtist);
+        artist.setName(formData.getName());
+        artist.setSurname(formData.getSurname());
+        artist.setDateOfBirth(formData.getDateOfBirth());
+        artist.setDateOfDeath(formData.getDateOfDeath());
+        artistService.saveArtist(artist);
         return "redirect:/artists/%d".formatted(id);
     }
 

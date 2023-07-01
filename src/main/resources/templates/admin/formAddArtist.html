@@ -17,45 +17,45 @@
           <label class="block">
             <span class="form-input-title">Name</span>
             <input
-                    th:field="${artist.name}"
+                    th:field="${form.name}"
                     required
                     placeholder=""
                     type="text"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('artist.name')}" th:errors="${artist.name}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.name')}" th:errors="${form.name}"></div>
           <label class="block">
             <span class="form-input-title">Surname</span>
             <input
-                    th:field="${artist.surname}"
+                    th:field="${form.surname}"
                     required
                     placeholder=""
                     type="text"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('artist.surname')}" th:errors="${artist.surname}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.surname')}" th:errors="${form.surname}"></div>
           <label class="block">
             <span class="form-input-title">Date of birth</span>
             <input
-                    th:field="${artist.dateOfBirth}"
+                    th:field="${form.dateOfBirth}"
                     placeholder=""
                     type="date"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('artist.dateOfBirth')}" th:errors="${artist.dateOfBirth}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.dateOfBirth')}" th:errors="${form.dateOfBirth}"></div>
           <label class="block">
             <span class="form-input-title">Date of death</span>
             <input
-                    th:field="${artist.dateOfDeath}"
+                    th:field="${form.dateOfDeath}"
                     placeholder=""
                     type="date"
                     class="form-input-field"
             />
           </label>
-          <div class="form-validation-error" th:if="${#fields.hasErrors('artist.dateOfDeath')}" th:errors="${artist.dateOfDeath}"></div>
+          <div class="form-validation-error" th:if="${#fields.hasErrors('form.dateOfDeath')}" th:errors="${form.dateOfDeath}"></div>
           <label class="block">
             <span class="form-input-title">Picture</span>
             <input

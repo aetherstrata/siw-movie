@@ -1,7 +1,7 @@
 package dev.aest.siw.movie.controller;
 
 import dev.aest.siw.movie.dto.*;
-import dev.aest.siw.movie.model.Artist;
+import dev.aest.siw.movie.entity.Artist;
 import dev.aest.siw.movie.service.ArtistService;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.service.ReviewService;

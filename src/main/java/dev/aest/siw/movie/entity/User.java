@@ -1,14 +1,17 @@
-package dev.aest.siw.movie.model;
+package dev.aest.siw.movie.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public final class User
@@ -17,6 +20,7 @@ public final class User
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NaturalId
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Email must not be whitespace")
     @Email
@@ -36,20 +40,13 @@ public final class User
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User other)) return false;
 
-        User user = (User) o;
-
-        if (!email.equals(user.email)) return false;
-        if (!name.equals(user.name)) return false;
-        return nickname.equals(user.nickname);
+        return email.equals(other.email);
     }
 
     @Override
     public int hashCode() {
-        int result = email.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + nickname.hashCode();
-        return result;
+        return email.hashCode();
     }
 }

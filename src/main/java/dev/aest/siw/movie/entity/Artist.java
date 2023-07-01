@@ -1,15 +1,17 @@
-package dev.aest.siw.movie.model;
+package dev.aest.siw.movie.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "artists")
 public final class Artist
 {
@@ -18,11 +20,11 @@ public final class Artist
     private Long id;
 
 	@Column(nullable = false)
-	@NotBlank(message = "The name may not be empty")
+	@NotBlank(message = "{artist.name.blank}")
 	private String name;
 
 	@Column(nullable = false)
-	@NotBlank(message = "The surname may not be empty")
+	@NotBlank(message = "{artist.surname.blank}")
 	private String surname;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -50,15 +52,12 @@ public final class Artist
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Artist other = (Artist) obj;
-		return Objects.equals(name, other.name) && Objects.equals(surname, other.surname);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Artist other)) return false;
+
+		if (!name.equals(other.name)) return false;
+		return  surname.equals(other.surname);
 	}
 
 }

@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.auth;
 
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.entity.User;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

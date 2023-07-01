@@ -1,8 +1,8 @@
 package dev.aest.siw.movie.service;
 
-import dev.aest.siw.movie.model.Movie;
-import dev.aest.siw.movie.model.Review;
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.entity.Movie;
+import dev.aest.siw.movie.entity.Review;
+import dev.aest.siw.movie.entity.User;
 import dev.aest.siw.movie.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,35 +45,9 @@ public class ReviewService
         return getReviewPage(movie, PageRequest.of(page, Math.min(size, MAX_PAGE_SIZE)));
     }
 
-    /**
-     * Get a {@link Page} of {@link Review Reviews}<br>
-     * See {@link ReviewService#getReviewPage(Movie, int, int)} for more info
-     * @return a maximum size {@link Page} of {@link Review Reviews}. It will be {@code empty} if no item satisfies the query.
-     */
     @Transactional(readOnly = true)
-    public Page<Review> getReviewPage(Movie movie, int page){
-        return getReviewPage(movie, page, MAX_PAGE_SIZE);
-    }
-
-    /**
-     * Get the count of {@link Review Reviews} for a specific {@link Movie}
-     * @param movie the movie to query against
-     * @return the count of related {@link Review Reviews}
-     */
-    @Transactional(readOnly = true)
-    public long getCountByMovie(Movie movie){
-        return reviewRepository.countByMovie(movie);
-    }
-
-    /**
-     * Get the review of a {@link User} for a {@link Movie}
-     * @param user the user to query against
-     * @param movie the movie to query against
-     * @return An {@link Optional} {@link Review}
-     */
-    @Transactional(readOnly = true)
-    public Review getUserReview(User user, Movie movie) {
-        return reviewRepository.findByMovieAndUser(movie, user).orElse(null);
+    public boolean userHasReview(Movie movie, User user){
+        return this.reviewRepository.existsByMovieAndUser(movie, user);
     }
 
     @Transactional
@@ -81,7 +55,7 @@ public class ReviewService
         reviewRepository.save(review);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Review> getReviewsForMovie(Long id) {
         return this.reviewRepository.findAllByMovieId(id);
     }

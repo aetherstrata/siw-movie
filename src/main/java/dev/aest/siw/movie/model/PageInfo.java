@@ -1,9 +1,8 @@
 package dev.aest.siw.movie.model;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 
-public record PageInfo<T>(
+public record PageInfo(
         int number,
         boolean hasContent,
         boolean hasNext,
@@ -16,7 +15,7 @@ public record PageInfo<T>(
 {
     public static final String ATTRIBUTE_NAME = "pageInfo";
 
-    public PageInfo(@NotNull Page<T> page) {
+    public PageInfo(Page<?> page) {
         this(page.getNumber(),
                 page.hasContent(),
                 page.hasNext(),

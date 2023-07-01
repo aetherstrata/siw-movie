@@ -1,7 +1,7 @@
 package dev.aest.siw.movie.repository;
 
-import dev.aest.siw.movie.model.Artist;
-import dev.aest.siw.movie.model.Movie;
+import dev.aest.siw.movie.entity.Artist;
+import dev.aest.siw.movie.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

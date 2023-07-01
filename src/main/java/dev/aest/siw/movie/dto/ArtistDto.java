@@ -1,6 +1,6 @@
 package dev.aest.siw.movie.dto;
 
-import dev.aest.siw.movie.model.Artist;
+import dev.aest.siw.movie.entity.Artist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

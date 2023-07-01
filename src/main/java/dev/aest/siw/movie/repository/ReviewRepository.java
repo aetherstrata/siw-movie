@@ -1,8 +1,8 @@
 package dev.aest.siw.movie.repository;
 
-import dev.aest.siw.movie.model.Movie;
-import dev.aest.siw.movie.model.Review;
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.entity.Movie;
+import dev.aest.siw.movie.entity.Review;
+import dev.aest.siw.movie.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ReviewRepository extends PagingAndSortingRepository<Review, Long>, CrudRepository<Review, Long>
 {
     List<Review> findAllByMovieId(Long id);
-    List<Review> findAllByMovie(Movie movie);
+
     Page<Review> findAllByMovie(Movie movie, Pageable pageable);
 
     Optional<Review> findByMovieAndUser(Movie movie, User user);

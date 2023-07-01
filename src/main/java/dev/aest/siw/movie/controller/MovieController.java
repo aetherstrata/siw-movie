@@ -1,9 +1,9 @@
 package dev.aest.siw.movie.controller;
 
-import dev.aest.siw.movie.model.Movie;
+import dev.aest.siw.movie.entity.Movie;
+import dev.aest.siw.movie.entity.Review;
 import dev.aest.siw.movie.model.PageInfo;
-import dev.aest.siw.movie.model.Review;
-import dev.aest.siw.movie.model.User;
+import dev.aest.siw.movie.model.ReviewFormData;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.service.ReviewService;
 import dev.aest.siw.movie.service.UserService;
@@ -17,12 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @Controller
 @RequiredArgsConstructor
 public class MovieController
 {
+    public static final String NOT_FOUND = "movies/notFound";
+
     private final MovieService movieService;
     private final ReviewService reviewService;
     private final ReviewValidator reviewValidator;
@@ -34,7 +34,7 @@ public class MovieController
             Model model) {
         Page<Movie> moviePage = movieService.getMoviesPage(pageable);
         model.addAttribute("movies", moviePage.stream().toList());
-        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo<>(moviePage));
+        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo(moviePage));
         return "movies/index";
     }
 
@@ -42,50 +42,39 @@ public class MovieController
     public String movieDetails(
             @PathVariable long id,
             Pageable pageable,
-            Principal principal,
             Model model) {
         Movie movie = movieService.getDetailedMovie(id);
-        if (movie == null){
-            return "movies/notFound";
-        }
+        if (movie == null) return NOT_FOUND;
         Page<Review> reviewPage = reviewService.getReviewPage(movie, pageable);
-        Review currentUserReview = reviewService.getUserReview(userService.getCurrentUser(), movie);
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviewPage.stream().toList());
-        model.addAttribute("currentUserReview", currentUserReview);
-        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo<>(reviewPage));
+        model.addAttribute("has_review", reviewService.userHasReview(movie, userService.getCurrentUser()));
+        model.addAttribute(PageInfo.ATTRIBUTE_NAME, new PageInfo(reviewPage));
         return "movies/movieDetails";
     }
 
     @GetMapping("/movies/{id}/addReview")
     public String addReview(
             @PathVariable final Long id,
-            Principal principal,
             Model model){
         Movie movie = movieService.getMovie(id);
-        if (movie == null){
-            return "movies/notFound";
-        }
-        Review review = new Review();
-        model.addAttribute("review", review);
+        if (movie == null) return NOT_FOUND;
+        model.addAttribute("form", new ReviewFormData());
         return "movies/formAddReview";
     }
 
     @PostMapping("/movies/{id}/addReview")
     public String addReview(
             @PathVariable final Long id,
-            @Valid @ModelAttribute("review") Review review,
-            BindingResult reviewBinding,
-            Principal principal,
-            Model model){
+            @Valid @ModelAttribute("form") ReviewFormData formData,
+            BindingResult bindingResult){
         Movie movie = movieService.getMovie(id);
-        User user = userService.getCurrentUser();
-        this.reviewValidator.validate(review, reviewBinding);
-        if (movie == null || user == null || reviewBinding.hasErrors()) {
-            return "movies/formAddReview";
-        }
+        if (movie == null) return NOT_FOUND;
+        Review review = formData.toReview();
         review.setMovie(movie);
-        review.setUser(user);
+        review.setUser(userService.getCurrentUser());
+        this.reviewValidator.validate(review, bindingResult);
+        if (bindingResult.hasErrors()) return "movies/formAddReview";
         reviewService.saveReview(review);
         return "redirect:/movies/" + id;
     }
