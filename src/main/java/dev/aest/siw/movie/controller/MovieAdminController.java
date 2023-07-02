@@ -4,7 +4,6 @@ import dev.aest.siw.movie.entity.Artist;
 import dev.aest.siw.movie.entity.Movie;
 import dev.aest.siw.movie.model.MovieFormData;
 import dev.aest.siw.movie.service.ArtistService;
-import dev.aest.siw.movie.service.MovieFileService;
 import dev.aest.siw.movie.service.MovieService;
 import dev.aest.siw.movie.validation.MovieFormValidator;
 import jakarta.validation.Valid;
@@ -22,7 +21,6 @@ import java.util.Set;
 public class MovieAdminController
 {
     private final MovieService movieService;
-    private final MovieFileService movieFileService;
     private final MovieFormValidator movieFormValidator;
 
     private final ArtistService artistService;
