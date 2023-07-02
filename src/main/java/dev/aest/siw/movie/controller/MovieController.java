@@ -86,6 +86,16 @@ public class MovieController
         this.reviewValidator.validate(review, bindingResult);
         if (bindingResult.hasErrors()) return "movies/formAddReview";
         reviewService.saveReview(review);
-        return "redirect:/movies/" + id;
+        return "redirect:/movies/%d".formatted(id);
+    }
+
+    @PostMapping("/movies/{id}/deleteReview")
+    public String deleteReview(
+            @PathVariable("id") final Long id){
+        Movie movie = movieService.getMovie(id);
+        if (movie == null) return NOT_FOUND;
+        Review userReview = reviewService.getUserReview(movie, userService.getCurrentUser());
+        if(userReview != null) reviewService.deleteReview(userReview);
+        return "redirect:/movies/%d".formatted(id);
     }
 }

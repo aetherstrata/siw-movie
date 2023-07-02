@@ -10,24 +10,25 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="flex flex-col place-content-center px-6 py-12 font-comfortaa">
     <div class="flex flex-col text-gray-900 px-6 py-12 m-auto max-w-lg space-y-2">
-        <span class="text-3xl font-bold text-center">Set new director</span>
-        <span class="text-xl font-bold text-center">Current director:
+        <h1 class="text-3xl font-bold text-center" th:text="${movie.id}"></h1>
+        <h2 class="text-2xl font-bold text-center">Set new director</h2>
+        <h3 class="text-xl font-bold text-center">Current director:
             <a th:if="${movie.director}" th:href="@{/artists/{id}(id=${movie.director.id})}">
                 <span class="hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
             </a>
             <span th:unless="${movie.director}">N/A</span>
-        </span>
+        </h3>
         <form th:action="@{/admin/movies/{movieId}/removeDirector(movieId=${movie.id})}" method="post" class="flex content-center">
             <input class="m-auto p-2 bg-slate-200 hover:bg-slate-900 hover:text-slate-100 rounded-xl" type="submit" value="Unset">
         </form>
     </div>
     <div class="flex flex-col space-y-4">
-        <span class="text-2xl font-bold text-center">Available directors</span>
+        <h3 class="text-xl font-bold text-center">Available directors</h3>
         <div class="flex flex-col place-content-center" th:unless="${#lists.isEmpty(artists)}">
             <span class="text-slate-700 text-center" th:text="|${#lists.size(artists)} available artists|"></span>
             <div class="grid grid-cols-4 gap-4 p-8 m-auto max-w-4xl">
                 <div class="flex flex-col justify-center" th:each="artist : ${artists}">
-                    <a th:href="@{/artists/{id}(id=${artist.id})}">
+                    <a th:href="@{/artists/{id}(id=${artist.id})}" class="w-fit m-auto">
                         <span class="text-center font-bold hover:underline" th:text="|${artist.name} ${artist.surname}|"></span>
                     </a>
                     <form  th:action="@{/admin/movies/{movieId}/setDirector/{directorId}(movieId=${movie.id},directorId=${artist.id})}" method="post" class="flex content-center">

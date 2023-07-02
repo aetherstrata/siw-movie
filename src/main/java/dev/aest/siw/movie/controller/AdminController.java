@@ -1,7 +1,7 @@
 package dev.aest.siw.movie.controller;
 
 import dev.aest.siw.movie.entity.Review;
-import dev.aest.siw.movie.repository.ReviewRepository;
+import dev.aest.siw.movie.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AdminController
 {
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
     @GetMapping("/admin")
     public String adminPage(){
@@ -22,10 +22,10 @@ public class AdminController
     @PostMapping("/admin/deleteReview/{id}")
     public String deleteReview(
             @PathVariable("id") Long id){
-        Review review = reviewRepository.findById(id).orElse(null);
+        Review review = reviewService.getReview(id);
         if (review == null) return "movies/reviewNotFound";
         Long movieId = review.getMovie().getId();
-        reviewRepository.delete(review);
+        reviewService.deleteReview(review);
         return "redirect:/movies/%d".formatted(movieId);
     }
 }

@@ -9,35 +9,33 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="flex flex-col w-screen place-content-center antialiased text-gray-900 px-5 py-12 space-y-12 font-comfortaa">
-    <span class="text-4xl font-bold m-auto text-center" th:text="${movie.title}"></span>
-    <div class="flex flex-row place-self-center w-256">
-        <div>
-            <img th:if="${movie.firstImage}" th:src="${movie.firstImage}" th:alt="|${movie.title} cover image|"
-                 class="w-[440px] h-[660px] rounded-2xl"/>
-            <div th:unless="${movie.firstImage}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
-                <span class="text-3xl m-auto">N/A</span>
-            </div>
+    <h1 class="text-4xl font-bold m-auto text-center" th:text="${movie.title}"></h1>
+    <div class="flex flex-row m-auto w-256">
+        <img th:if="${movie.firstImage}" th:src="${movie.firstImage}" th:alt="|${movie.title} cover image|"
+             class="w-[440px] h-[660px] rounded-2xl"/>
+        <div th:unless="${movie.firstImage}" class="w-[440px] h-[660px] bg-slate-400 rounded-2xl">
+            <span class="text-3xl m-auto">N/A</span>
         </div>
         <div class="w-4"></div>
         <div class="w-[2px] h-[660px] rounded bg-slate-400"></div>
         <div class="w-4"></div>
         <div class="flex flex-col place-content-center align-middle min-h-full max-w-lg">
-            <span class="text-2xl mb-2"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></span>
-            <span class="text-2xl font-bold" th:if="${movie.synopsis}">Synopsis</span>
+            <h3 class="text-2xl mb-2"><span class="font-bold">Year</span> <span th:text="${movie.year}"></span></h3>
+            <h3 class="text-2xl font-bold" th:if="${movie.synopsis}">Synopsis</h3>
             <span class="mb-2" th:if="${movie.synopsis}" th:text="${movie.synopsis}"></span>
-            <span class="text-2xl mb-2" th:if="${movie.director}"><span class="font-bold">Directed by</span>
+            <h3 class="text-2xl mb-2" th:if="${movie.director}"><span class="font-bold">Directed by</span>
                 <a th:href="|@{/artists/}${movie.director.id}|">
                     <span class="text-xl hover:underline" th:text="|${movie.director.name} ${movie.director.surname}|"></span>
                 </a>
-            </span>
-            <span th:unless="${#lists.isEmpty(movie.actors)}" class="text-2xl font-bold">Actors</span>
+            </h3>
+            <h3 th:unless="${#lists.isEmpty(movie.actors)}" class="text-2xl font-bold">Actors</h3>
             <a th:each="actor : ${movie.actors}" th:text="|${actor.name} ${actor.surname}|" th:href="@{/artists/{id}(id=${actor.id})}" class="text-xl hover:underline"></a>
             <a th:href="@{/movies/{id}/images(id=${movie.id})}" th:if="${movie.imageCount > 1}">
                 <span class="text-xl font-bold hover:underline">View other images</span>
             </a>
         </div>
     </div>
-    <div sec:authorize="hasAuthority('ADMIN')" class="m-auto">
+    <div sec:authorize="hasAuthority('ADMIN')" class="flex m-auto space-x-4">
         <a th:href="@{/admin/movies/{movieId}/update(movieId=${movie.id})}">
             <button class="primary-action-button">Update info</button>
         </a>
@@ -52,30 +50,33 @@
         </form>
     </div>
     <div class="mx-auto">
-        <span class="text-3xl font-bold w-full text-center block">Reviews</span>
+        <h2 class="text-3xl font-bold w-full text-center block">Reviews</h2>
         <div class="mx-auto">
             <span th:text="|${pageInfo.totalElements()} total reviews|"></span>
-            <span sec:authorize="isAuthenticated()" th:unless="${has_review}">|
-                <a th:href="@{/movies/{id}/addReview(id=${movie.id})}" class="hover:underline">Add review</a>
+            <span sec:authorize="isAuthenticated()">|
+                <a th:unless="${has_review}" th:href="@{/movies/{id}/addReview(id=${movie.id})}" class="hover:underline">Add review</a>
+                <form th:if="${has_review}" th:action="@{/movies/{movieId}/deleteReview(movieId=${movie.id})}" method="post" class="w-fit inline">
+                    <button class="hover:underline">Delete review</button>
+                </form>
             </span>
         </div>
     </div>
     <div th:each="reviewFormData : ${reviews}" class="flex flex-col w-256 m-auto">
         <div class="flex flex-row justify-between">
-            <span class="mx-4">
+            <div class="mx-4">
                 <span th:text="${reviewFormData.title}" class="text-xl font-bold"></span>
                 <span class="text-lg">by</span>
                 <span th:text="${reviewFormData.user.nickname}" class="text-lg font-bold"></span>
                 <span th:if="${not #strings.isEmpty(reviewFormData.user.name)}" th:text="|(${reviewFormData.user.name})|"></span>
-            </span>
+            </div>
             <span th:text="|${reviewFormData.score}/5|" class="text-2xl font-bold"></span>
         </div>
         <div th:if="${reviewFormData.text}" class="rounded-2xl bg-slate-200 p-5">
             <span th:text="${reviewFormData.text}" class="whitespace-pre-line"></span>
         </div>
         <form th:action="@{/admin/deleteReview/{id}(id=${reviewFormData.id})}" method="post" class="space-y-4 w-96">
-            <button sec:authorize="hasAuthority('ADMIN')" class="bg-slate-400 p-2">
-                Delete this reviewFormData
+            <button sec:authorize="hasAuthority('ADMIN')" class="bg-slate-400 p-2 rounded hover:bg-sky-950 hover:text-white">
+                Delete this review
             </button>
         </form>
     </div>
