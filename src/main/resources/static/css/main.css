@@ -844,6 +844,10 @@ select{
   height: 100vh;
 }
 
+.max-h-256{
+  max-height: 64rem;
+}
+
 .min-h-full{
   min-height: 100%;
 }
@@ -899,6 +903,11 @@ select{
 
 .w-full{
   width: 100%;
+}
+
+.w-max{
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .w-screen{

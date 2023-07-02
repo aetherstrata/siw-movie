@@ -147,7 +147,7 @@ public class MovieAdminController
     @PostMapping("/admin/movies/{id}/delete")
     public String deleteMovie(
             @PathVariable("id") final Long id){
-        Movie movie = movieService.getMovie(id);
+        Movie movie = movieService.getMovieWithImages(id);
         if (movie == null) return MovieController.NOT_FOUND;
         movieService.deleteMovie(movie);
         return "redirect:/movies";

@@ -29,7 +29,7 @@ public class MovieController
     private final UserService userService;
 
     @GetMapping("/movies")
-    public String movieHome(
+    public String getMovieHome(
             Pageable pageable,
             Model model) {
         Page<Movie> moviePage = movieService.getMoviesPage(pageable);
@@ -39,7 +39,7 @@ public class MovieController
     }
 
     @GetMapping("/movies/{id}")
-    public String movieDetails(
+    public String getMovieDetailsPage(
             @PathVariable long id,
             Pageable pageable,
             Model model) {
@@ -53,8 +53,18 @@ public class MovieController
         return "movies/movieDetails";
     }
 
+    @GetMapping("/movies/{id}/images")
+    public String getMovieImagesPage(
+            @PathVariable("id") final Long id,
+            Model model){
+        Movie movie = movieService.getMovieWithImages(id);
+        if (movie == null) return NOT_FOUND;
+        model.addAttribute("movie", movie);
+        return "movies/movieImages";
+    }
+
     @GetMapping("/movies/{id}/addReview")
-    public String addReview(
+    public String getAddReviewPage(
             @PathVariable final Long id,
             Model model){
         Movie movie = movieService.getMovie(id);

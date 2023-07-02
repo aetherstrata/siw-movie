@@ -18,6 +18,7 @@ import java.util.List;
 public class ArtistService
 {
     private final ArtistRepository artistRepository;
+    private final ArtistFileService artistFileService;
 
     @Transactional(readOnly = true)
     public List<Artist> getAll() {
@@ -55,6 +56,7 @@ public class ArtistService
 
     @Transactional
     public void deleteArtist(Artist artist){
+        artistFileService.delete(artist.getImageUrl());
         artistRepository.delete(artist);
     }
 }

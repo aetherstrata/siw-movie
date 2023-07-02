@@ -45,6 +45,9 @@ public final class Movie
     @Formula("(SELECT i.image FROM movie_images i WHERE i.movie_id=id ORDER BY i.image LIMIT 1)")
     private String firstImage;
 
+    @Formula("(SELECT COUNT(*) FROM movie_images i WHERE i.movie_id=id)")
+    private Integer imageCount;
+
     @ManyToOne
     @JoinColumn(name = "director_id")
     private Artist director;

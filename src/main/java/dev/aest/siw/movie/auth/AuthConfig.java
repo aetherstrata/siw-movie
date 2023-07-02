@@ -52,7 +52,7 @@ public class AuthConfig
                 .and()
                 .cors().disable()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/","/register", "/movies", "/movies/{id}", "/artists", "/artists/{id}", "/api/v1/**","/css/**", "/images/**", "/uploads/**", "/favicon.ico").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/","/register", "/movies", "/movies/{id}", "/movies/{id}/images", "/artists", "/artists/{id}", "/api/v1/**","/css/**", "/images/**", "/uploads/**", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY)
                         .anyRequest().authenticated()

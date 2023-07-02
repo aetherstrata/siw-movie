@@ -21,7 +21,7 @@ public abstract class FileService implements IFileService
         try {
             Files.createDirectories(root);
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload! => " + root + "\nInner exception: " + e.getMessage());
+            throw new RuntimeException("Could not initialize folder for upload! => " + root + "\nInner exception: " + e.getMessage(), e);
         }
     }
 
@@ -32,9 +32,9 @@ public abstract class FileService implements IFileService
             Files.copy(file.getInputStream(), filepath);
             return filepath.toString().substring(1);
         } catch (FileAlreadyExistsException e) {
-            throw new RuntimeException("A file of that name already exists. => " + filepath);
+            throw new RuntimeException("A file of that name already exists. => " + filepath, e);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -46,7 +46,17 @@ public abstract class FileService implements IFileService
             if (resource.isReadable()) return resource;
             throw new RuntimeException("Could not read file! => " + file.toAbsolutePath());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new RuntimeException("Error: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean delete(String filename) {
+        try {
+            Path file = Path.of("." + filename).toAbsolutePath();
+            return Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage(), e);
         }
     }
 }
