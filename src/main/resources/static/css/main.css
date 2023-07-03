@@ -934,6 +934,10 @@ select{
   max-width: 36rem;
 }
 
+.flex-initial{
+  flex: 0 1 auto;
+}
+
 .grid-cols-1{
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1070,6 +1074,11 @@ select{
 
 .rounded-xl{
   border-radius: 0.75rem;
+}
+
+.border-slate-950{
+  --tw-border-opacity: 1;
+  border-color: rgb(2 6 23 / var(--tw-border-opacity));
 }
 
 .bg-blue-500{
